@@ -1,0 +1,30 @@
+/*
+  Name: Louis Kha
+  Date: 5/5/2023
+  Section: CSE 154 AA
+  TA: Elias Martin
+
+  This styles.css file will be used for styling
+  Styles the page to properly display content such as the NAV bar.
+*/
+
+.nav {
+  float: left;
+  list-style-type: none;
+  margin: 2px;
+  padding: 10px;
+  padding-left: 40px;
+  border: 2px;
+  border-color: black;
+  border-style: solid;
+  background-color: bisque;
+}
+
+#nav {
+  display: flex;
+  border: 2px;
+  border-color: black;
+  border-style: solid;
+  background-color: cornflowerblue;
+  padding: 1%;
+}
