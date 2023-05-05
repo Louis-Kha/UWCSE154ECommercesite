@@ -79,14 +79,24 @@ nav {
 
 #item-description {
   float: right;
+  align-items: start;
   height: 400px;
-  width: 800px;
+  width: 850px;
   margin-right: 50px;
 }
 
 #selected-item {
   float: left;
   height: 400px;
-  width: 800px;
+  width: 850px;
   margin-left: 50px;
+}
+
+#detailed-description {
+  display: block;
+  margin: auto;
+  margin-top: 22%;
+  height: 400px;
+  width: 95%;
+  background-color: cornsilk;
 }
