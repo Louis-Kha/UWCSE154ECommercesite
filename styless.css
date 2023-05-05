@@ -20,11 +20,19 @@
   background-color: bisque;
 }
 
-#nav {
+nav {
   display: flex;
   border: 2px;
   border-color: black;
   border-style: solid;
   background-color: cornflowerblue;
-  padding: 1%;
+}
+
+#search-catagory-filter {
+  display: inline;
+  float: right;
+  justify-content: end;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 16pt;
 }
