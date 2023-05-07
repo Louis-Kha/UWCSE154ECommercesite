@@ -16,8 +16,8 @@
    * adds eventlistener when webpage is loaded in.
    */
   function init() {
+    //id("search-button").addEventListener("click", searchFilter);
   }
-
 
     /**
    * Returns the element that has the ID attribute with the specified value.
