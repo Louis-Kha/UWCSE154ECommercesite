@@ -1,0 +1,41 @@
+#page-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 98.7vh;
+  background-color: cornflowerblue;
+  /* max-height: 50vh; */
+}
+
+section {
+  background-color: gray;
+  height: 75%;
+  width: 35%;
+  border-radius: 5px;
+  padding: 20px;
+  /* flex-direction: column; */
+}
+
+form {
+  justify-content: space-evenly;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+}
+
+input {
+  background-color: bisque;
+  width: 75%;
+  padding: 30px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  width: 25%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: bisque;
+}
