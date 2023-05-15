@@ -1,16 +1,17 @@
 ### Name: Get Item Information
 * Request Format:
   * /:itemID
-*Request Type: 
+* Request Type: 
   * GET
-*Description: 
+* Description: 
   * Gets an item's information, such as price and name, picture, type, etc.
-*Example Request:
+* Example Request:
   * /0001
-*Return Type: 
+* Return Type: 
   * JSON Object
-*Example Response:
-* {
+* Example Response:
+'''json
+{
   "name": "Banana",
   "price": "$1.20",
   "picture": "/items/banana.png",
