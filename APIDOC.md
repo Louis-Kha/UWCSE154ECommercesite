@@ -10,7 +10,7 @@
 * Return Type: 
   * JSON Object
 * Example Response:
-'''json
+```json
 {
   "name": "Banana",
   "price": "$1.20",
@@ -18,7 +18,7 @@
   "type": "fruit",
   "description": "A potassium-filled fruit!"
 }
-*Error Handling:
+* Error Handling:
 * Possible 400 (invalid request) error (all plain text):
   * "Item ID does not match any item in store."
 * Possible 500 Request (all plain text):
