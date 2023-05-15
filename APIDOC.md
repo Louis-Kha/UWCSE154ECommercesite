@@ -25,14 +25,15 @@
 * Possible 500 Request (all plain text):
   * "Trouble reaching website, try again at another time."
 
-Name: Get Account Information
-Description: Gets all account information such as account name, purchase history, balance
-Side Effects
-Method: GET
-Parameters: Account ID
-Return Type: JSON Object
-Example Request: .../123 
-Example Response
+### Name: Get Account Information
+* Description: Gets all account information such as account name, purchase history, balance
+* Side Effects: None
+* Method: GET
+* Parameters: Account ID
+* Return Type: JSON Object
+* Example Request: .../123 
+* Example Response
+```json
 {
   "username" : "Account"
   "password" : "hash"
@@ -54,108 +55,96 @@ Example Response
     }
   ]
 }
-Errors: 
-  Possible 400 (invalid request) error (all plain text):
-    "Account ID does not match any existing account."
-  Possible 500 Request (all plain text):
-    "Trouble reaching website, try again at another time."
+```
 
-Name: Get Reviews
-Request Format: /:itemID/reviews
-Request Type: GET
-Return Data Format: JSON Object
-Description: Gets all user reviews for an item
-Example Request: /:itemID/reviews
-Example Response:
+### Name: Get Reviews
+* Request Format: /:itemID/reviews
+* Request Type: GET
+* Return Data Format: JSON Object
+* Description: Gets all user reviews for an item
+* Example Request: /:itemID/reviews
+* Example Response:
+```json
 {
   "userid": "12345"
   "review": "This banana is very delicious and filled with potassium!"
   "rating": "5"
 }
-Error Handling:
-Possible 400 (invalid request) error (all plain text):
-  "Item ID does not match any item in store."
-Possible 400 (invalid request) error (all plain text):
-  "Item does not have any reviews."
-Possible 500 Request (all plain text):
-  "Trouble reaching website, try again at another time."
+```
+* Error Handling:
+* Possible 400 (invalid request) error (all plain text):
+  * "Item ID does not match any item in store."
+* Possible 400 (invalid request) error (all plain text):
+  * "Item does not have any reviews."
+* Possible 500 Request (all plain text):
+  * "Trouble reaching website, try again at another time."
+
+### POST
+
+### Name: Log in 
+* Description: Allows the user to log in 
+* Side Effects: None
+* Method: POST
+* Parameters: Form Data (Email, Password)
+* Return Type: Promise
+* Example Request: /newUsername=?&newPassword=?
+* Example Response: True or False;
+* Errors:
+  * Possible 400 Request (all plain text):
+    * "Username or Password is wrong"
+  * Possible 500 Request (all plain text):
+    * "Trouble reaching website, try again at another time."
+
+### Name: Create account
+* Description: Allows the user to create an account
+* Side Effects: Adds username and password to database.
+* Method: POST
+* Parameters: Form Data (Email, Password)
+* Return Type: Promise
+* Example Request: /newUsername=?&newPassword=?
+* Example Response: True or False;
+* Errors:
+  * Possible 400 Request (all plain text): "Username already exists"
+  * Possible 500 Request (all plain text): "Trouble reaching website, try again at another time."
 
 
-POST
+### Name: Purchase Items
+* Description: Allows the user to purchase items with their account if they have enough balance
+* Side Effects: Decreases balance, adds to purchase history
+* Method: POST
+* Parameters: All Items in cart, Account ID
+* Return Type: Promise
+* Example Request: items=?&accountID=123
+* Example Response: ItemPurchaseID : 123
+* Errors:
+  * Possible 400 Request (all plain text): "Insufficient Balance"
+  * Possible 500 Request (all plain text): "Trouble reaching website, try again at another time."
 
-Name: Log in 
-Description: Allows the user to log in 
-Side Effects: None
-Method: POST
-Parameters: Form Data (Email, Password)
-Return Type: Promise
-Example Request: /newUsername=?&newPassword=?
-Example Response: True or False;
-Errors:
-Possible 400 Request (all plain text):
-  "Username or Password is wrong"
-Possible 500 Request (all plain text):
-  "Trouble reaching website, try again at another time."
-
-Name: Create account
-Description: Allows the user to create an account
-Side Effects: Adds username and password to database.
-Method: POST
-Parameters: Form Data (Email, Password)
-Return Type: Promise
-Example Request: /newUsername=?&newPassword=?
-Example Response: True or False;
-Errors:
-Possible 400 Request (all plain text):
-  "Username already exists"
-Possible 500 Request (all plain text):
-  "Trouble reaching website, try again at another time."
+### Name: Edit account information
+* Description: Allows user to change password / account information
+* Side Effects: Changes User email, password, or account information
+* Method: POST
+* Parameters: Form Data (Account ID, What's being changed, New value)
+* Return Type: Promise
+* Example Request: newUser=?&newEmail=?&newPassword=?
+* Example Response: True or False
+* Errors:
+  * Possible 400 Request (all plain text): "Username already exists"
+  * Possible 500 Request (all plain text): "Trouble reaching website, try again at another time."
 
 
-
-Name: Purchase Items
-Description: Allows the user to purchase items with their account if they have enough balance
-Side Effects: Decreases balance, adds to purchase history
-Method: POST
-Parameters: All Items in cart, Account ID
-Return Type: Promise
-Example Request: items=?&accountID=123
-Example Response: ItemPurchaseID : 123
-Errors
-Possible 400 Request (all plain text):
-  "Insufficient Balance"
-Possible 500 Request (all plain text):
-  "Trouble reaching website, try again at another time."
-
-
-Name: Edit account information
-Description: Allows user to change password / account information
-Side Effects: Changes User email, password, or account information
-Method: POST
-Parameters: Form Data (Account ID, What's being changed, New value)
-Return Type: Promise
-Example Request: newUser=?&newEmail=?&newPassword=?
-Example Response: True or False
-Errors:
-Possible 400 Request (all plain text):
-  "Username already exists"
-Possible 500 Request (all plain text):
-  "Trouble reaching website, try again at another time."
-
-
-Name: Post reviews
-Request Format: /review endpoint with POST parameters of "itemID" and "score" and "review" and "userID"
-Request Type: POST
-Returned Data Format: Plain Text
-Description: Allows user to post a review of an item
-Parameters: Form Data (Item ID, Account ID, review)
-Return Type: Promise
-Example Request: /review endpoint with POST parameters of itemid=00001 and score=5 and review="its pretty good" and userid=12345
-Example Response: "Review Successfully Posted!"
-Error Handling:
-Possible 400 (invalid request) errors (all plain text):
-  If missing itemid, an error is returned with the message: "No Item selected to review"
-  If missing score, an error is returned with the message: "No score given to item"
-  If missing review, an error is returned with the message: "No review written for item"
-  If missing userid, an error is returned with the message: "Invalid user, log in to post review"
-
+### Name: Post reviews
+* Request Format: /review endpoint with POST parameters of "itemID" and "score" and "review" and "userID"
+* Request Type: POST
+* Returned Data Format: Plain Text
+* Description: Allows user to post a review of an item
+* Parameters: Form Data (Item ID, Account ID, review)
+* Return Type: Promise
+* Example Request: /review endpoint with POST parameters of itemid=00001 and score=5 and review="its pretty good" and userid=12345
+* Example Response: "Review Successfully Posted!"
+* Error Handling:
+  * Possible 400 (invalid request) errors (all plain text):
+    * If missing itemid, an error is returned with the message: "No Item selected to review"
+    * If missing score, an error is returned with the message: "No score given to item"
+    * If missing review, an error is returned with the message: "No review written for item"
+    * If missing userid, an error is returned with the message: "Invalid user, log in to post review"
