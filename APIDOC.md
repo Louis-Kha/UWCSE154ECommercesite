@@ -18,6 +18,7 @@
   "type": "fruit",
   "description": "A potassium-filled fruit!"
 }
+```
 * Error Handling:
 * Possible 400 (invalid request) error (all plain text):
   * "Item ID does not match any item in store."
