@@ -1,22 +1,22 @@
-Name: Get Item Information
-Request Format: /:itemID
-Request Type: GET
-Description: Gets an items information, such as price and name, picture, type, etc.
-Example Request: /0001
-Return Type: JSON Object
-Example Response:
+### Name: Get Item Information
+**Request Format**: /:itemID
+**Request Type**: GET
+**Description**: Gets an item's information, such as price and name, picture, type, etc.
+**Example Request**: /0001
+**Return Type**: JSON Object
+**Example Response**:
 {
-  "name": "Banana"
-  "price": "$1.20"
-  "picture": "/items/banana.png"
-  "type": "fruit"
-  "description": "A potassium filled fruit!"
+  "name": "Banana",
+  "price": "$1.20",
+  "picture": "/items/banana.png",
+  "type": "fruit",
+  "description": "A potassium-filled fruit!"
 }
-Error Handling:
-Possible 400 (invalid request) error (all plain text):
-  "Item ID does not match any item in store."
-Possible 500 Request (all plain text):
-  "Trouble reaching website, try again at another time."
+**Error Handling:**
+* Possible 400 (invalid request) error (all plain text):
+  * "Item ID does not match any item in store."
+* Possible 500 Request (all plain text):
+  * "Trouble reaching website, try again at another time."
 
 Name: Get Account Information
 Description: Gets all account information such as account name, purchase history, balance
