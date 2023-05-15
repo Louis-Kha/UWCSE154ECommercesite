@@ -1,14 +1,10 @@
 ### Name: Get Item Information
-* Request Format:
-  * /:itemID
-* Request Type: 
-  * GET
-* Description: 
-  * Gets an item's information, such as price and name, picture, type, etc.
-* Example Request:
-  * /0001
-* Return Type: 
-  * JSON Object
+* Request Format: /:itemID
+* Side Effects: None
+* Request Type: GET
+* Description: Gets an item's information, such as price and name, picture, type, etc.
+* Example Request: /0001
+* Return Type: JSON Object
 * Example Response:
 ```json
 {
@@ -59,6 +55,7 @@
 
 ### Name: Get Reviews
 * Request Format: /:itemID/reviews
+* Side Effects: None
 * Request Type: GET
 * Return Data Format: JSON Object
 * Description: Gets all user reviews for an item
