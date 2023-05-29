@@ -17,7 +17,7 @@ app.use(multer().none());
  */
 async function getDBConnection() {
   const db = await sqlite.open({
-    filename: "yipper.db", // replace this with your db file name
+    filename: "store.db", // replace this with your db file name
     driver: sqlite3.Database
   });
   return db;
