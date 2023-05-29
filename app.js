@@ -16,14 +16,20 @@ app.use(multer().none());
 app.get('/main-view/items', async (req, res) => {
   try {
     let db = await getDBConnection();
-    let query = "SELECT * FROM store";
-    let results = await db.all(query);
-    res.type('json').send({"store": results});
-
+    if (req.query.search) {
+      let query = "SELECT * FROM store WHERE name LIKE '%" + req.query.search + "%'";
+      let results = await db.all(query);
+      res.type('json').send({"store": results});
+    } else {
+      let query = "SELECT * FROM store";
+      let results = await db.all(query);
+      res.type('json').send({"store": results});
+    }
   } catch (err) {
     res.type('text').send("An error occurred on the server. Try again later.");
   }
 });
+
 
 /**
  * Establishes a database connection to the database and returns the database object.
