@@ -30,7 +30,6 @@ app.get('/main-view/items', async (req, res) => {
   }
 });
 
-
 /**
  * Establishes a database connection to the database and returns the database object.
  * Any errors that occur should be caught in the function that calls this one.
