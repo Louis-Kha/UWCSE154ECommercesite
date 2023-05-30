@@ -19,7 +19,18 @@
    */
   function init() {
     requestItems();
-    //id("search-button").addEventListener("click", searchFilter);
+    id("search-button").addEventListener("click", requestSearch);
+  }
+
+  /**
+   * Get requests a JSON list of searched items.
+   */
+  function requestSearch() {
+    fetch("http://localhost:8000/main-view/items?search=" + id('search-bar').value)
+      .then(statusCheck)
+      .then(res => res.text())
+      .then(processAllItems)
+      .catch(handleError);
   }
 
   /**
@@ -33,7 +44,7 @@
     let itemName = document.createElement('p');
     let itemCatagory = document.createElement('p');
 
-    itemImage.setAttribute('src', data['src']);
+    //itemImage.setAttribute('src', data['src']);
     itemImage.setAttribute('alt', "Store Item Picture");
     itemName.textContent = data['name'];
     itemCatagory.textContent = data['catagory'];
@@ -52,6 +63,7 @@
    */
   function processAllItems(data) {
     storeItems = JSON.parse(data);
+    console.log(storeItems['store']);
 
     id('item-display').innerHTML = '';
     for (let i = 0; i < storeItems['store'].length; i++) {
