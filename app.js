@@ -180,6 +180,45 @@ app.post('/purchases/history/:username', async (req, res) => {
     res.type('text').send(err);
   }
 });
+
+app.get('/item-view/reviews/:item', async (req, res) => {
+  try {
+    if (req.params['item']) {
+      let db = await getDBConnection();
+      let query = "SELECT * FROM reviews WHERE item LIKE '%" + req.params['item'] + "%'";
+      let results = await db.all(query);
+      res.type('json').send({"reviews": results});
+    } else {
+      res.type('text').send("Missing item parameter, please try again!");
+    }
+  } catch (err) {
+    res.type('text').send("An error occurred on the server. Try again later.");
+  }
+});
+
+/**
+ * Get request endpoint that allows all items from the store to be retrieved.
+ */
+app.get('/main-view/items', async (req, res) => {
+  try {
+    let db = await getDBConnection();
+    if (req.query.search) {
+      let query = "SELECT * FROM store WHERE name LIKE '%" + req.query.search + "%'";
+      let results = await db.all(query);
+      await db.close();
+      res.type('json').send({"store": results});
+    } else {
+      let query = "SELECT * FROM store";
+      let results = await db.all(query);
+      await db.close();
+      res.type('json').send({"store": results});
+    }
+  } catch (err) {
+    await db.close();
+    res.type('text').send("An error occurred on the server. Try again later.");
+  }
+});
+
 /**
  * Establishes a database connection to the database and returns the database object.
  * Any errors that occur should be caught in the function that calls this one.
@@ -187,16 +226,13 @@ app.post('/purchases/history/:username', async (req, res) => {
  */
 async function getDBConnection() {
   const db = await sqlite.open({
-      filename: 'data.db',
-      driver: sqlite3.Database
+    filename: "store.db", // replace this with your db file name
+    driver: sqlite3.Database
   });
   return db;
 }
 
-
 app.use(express.static('public'));
-
-const otherPort = 8000;
-const PORT = process.env.PORT || otherPort;
-
+const PORT = process.env.PORT || 8000;
 app.listen(PORT);
+

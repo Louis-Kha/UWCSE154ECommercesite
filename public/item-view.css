@@ -1,0 +1,121 @@
+/*
+  Name: Louis Kha
+  Date: 5/5/2023
+  Section: CSE 154 AA
+  TA: Elias Martin
+
+  This item-view.css file will be used for styling
+  Styles the page to properly display content such as the NAV bar.
+*/
+
+.nav {
+  float: left;
+  list-style-type: none;
+  padding: 10px;
+  border: 2px;
+  width: 10%;
+  text-align: center;
+  border-color: black;
+  border-style: solid;
+  background-color: bisque;
+}
+
+nav {
+  height: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content:  center;
+  border: 2px;
+  border-color: black;
+  border-style: solid;
+  background-color: cornflowerblue;
+}
+
+ul {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#item-detailed {
+  border: 2px;
+  border-style: solid;
+  border-color: black;
+  padding-top: 20px;
+  width: 99.8%;
+  height: 840px;
+  background-color: cornflowerblue;
+  font-size: 18pt;
+}
+
+#item-description, #selected-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: azure;
+  margin: auto;
+}
+
+#item-description {
+  float: right;
+  align-items: start;
+  height: 50%;
+  width: 42%;
+  margin-right: 2%;
+}
+
+#selected-item {
+  float: left;
+  height: 50%;
+  width: 42%;
+  margin-left: 2%;
+}
+
+#detailed-description {
+  float: left;
+  margin-top: 2%;
+  margin-left: 2%;
+  height: 28%;
+  width: 96%;
+  background-color: cornsilk;
+}
+
+
+#purchases {
+  float: center;
+  margin-top: 38%;
+  margin-left: 90%;
+}
+
+#purchase-bar {
+  width: 20px;
+}
+
+#reviews {
+  display: flex;
+  margin-top: 1%;
+  flex-direction: column;
+}
+
+.review {
+  display: block;
+  border: 3px;
+  padding: 12px;
+  border-style: solid;
+  border-color: black;
+  font-size: 16pt;
+  background-color: bisque;
+}
+
+.date {
+  float: right;
+}
+
+.score {
+  width: 15%;
+  height: 8%;
+  border: 2px;
+  border-style: solid;
+  border-color: black;
+  background-color: lightsalmon;
+}
