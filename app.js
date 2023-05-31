@@ -229,6 +229,11 @@ app.get('/main-view/items', async (req, res) => {
       let results = await db.all(query);
       await db.close();
       res.type('json').send({"store": results});
+    } else if (req.query.category && req.query.category !== "None") {
+      let query = "SELECT * FROM store WHERE category LIKE '%" + req.query.category + "%'";
+      let results = await db.all(query);
+      await db.close();
+      res.type('json').send({"store": results});
     } else {
       let query = "SELECT * FROM store";
       let results = await db.all(query);

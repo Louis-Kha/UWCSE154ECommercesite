@@ -19,6 +19,7 @@
    */
   function init() {
     requestItems();
+    id('category-bar').addEventListener('change', requestCategorySearch)
     id("search-button").addEventListener("click", requestSearch);
   }
 
@@ -38,7 +39,20 @@
   /**
    * Get requests a JSON list of searched items.
    */
+  function requestCategorySearch() {
+    console.log(id('category-bar').value);
+    fetch("http://localhost:8000/main-view/items?category=" + id('category-bar').value)
+      .then(statusCheck)
+      .then(res => res.text())
+      .then(processAllItems)
+      .catch(handleError);
+  }
+
+  /**
+   * Get requests a JSON list of searched items.
+   */
   function requestSearch() {
+    id('category-bar').value ="None";
     fetch("http://localhost:8000/main-view/items?search=" + id('search-bar').value)
       .then(statusCheck)
       .then(res => res.text())
