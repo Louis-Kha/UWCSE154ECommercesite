@@ -224,7 +224,13 @@ app.get('/item-view/reviews/:item', async (req, res) => {
 app.get('/main-view/items', async (req, res) => {
   try {
     let db = await getDBConnection();
-    if (req.query.search) {
+    if (req.query.search && req.query.category && req.query.category !== "None") {
+      let query = "SELECT * FROM store WHERE name LIKE '%" + req.query.search + "%' AND category LIKE '%" +
+      req.query.category + "%'";
+      let results = await db.all(query);
+      await db.close();
+      res.type('json').send({"store": results});
+    } else if (req.query.search) {
       let query = "SELECT * FROM store WHERE name LIKE '%" + req.query.search + "%'";
       let results = await db.all(query);
       await db.close();
