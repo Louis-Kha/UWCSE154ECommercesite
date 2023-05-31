@@ -57,8 +57,10 @@
     let itemName = document.createElement('a');
     let itemCatagory = document.createElement('p');
 
-    //itemImage.setAttribute('src', data['src']);
-    itemImage.setAttribute('alt', "Store Item Picture");
+    if (data['src'] !== null) {
+      itemImage.setAttribute('src', data['src']);
+    }
+    itemImage.setAttribute('alt', "Picture of " + data['name']);
     itemName.textContent = data['name'];
     itemCatagory.textContent = data['category'];
 
@@ -67,6 +69,7 @@
     itemCard.appendChild(itemCatagory);
 
     itemCard.classList.add('item');
+    itemImage.classList.add('item-image');
     itemName.href = 'http://localhost:8000/item-view.html';
     itemName.addEventListener('click', storeName);
     return itemCard;

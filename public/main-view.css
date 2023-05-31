@@ -65,3 +65,8 @@ ul {
   height: 30%;
   margin: 15px;
 }
+
+.item-image {
+  width: 50%;
+  height: 50%;
+}

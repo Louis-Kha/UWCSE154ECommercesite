@@ -22,6 +22,11 @@
     setPage();
   }
 
+  /**
+   * Returns review score based on review from user.
+   * @param {Integer} score - an int between 1-5 to select image src.
+   * @returns {String} - img src corresponding to review score.
+   */
   function selectReviewScore(score) {
     switch(score) {
       case 1:
@@ -37,6 +42,11 @@
     }
   }
 
+  /**
+   * Helper function to create new DOM element for review section.
+   * @param {JSON} data - Specific Item information.
+   * @returns {DOM} - returns document element to be added to page.
+   */
   function createReviewCard(data) {
     let reviewCard = document.createElement('article');
     let reviewScore = document.createElement('img');
@@ -62,6 +72,10 @@
 
   }
 
+  /**
+   * Uses item details from parameter to append reviews to review section.
+   * @param {JSON} data - JSON object of item details.
+   */
   function processReviews(data) {
     let reviews = JSON.parse(data);
     id('reviews').innerHTML = '';
@@ -72,6 +86,10 @@
     }
   }
 
+  /**
+   * Get request with item query parameter to recieve JSON object of item.
+   * @param {String} item - Name of the item being requested.
+   */
   function requestReviews(item) {
     fetch("http://localhost:8000/item-view/reviews/" + item)
       .then(statusCheck)
@@ -80,12 +98,17 @@
       .catch(handleError);
   }
 
+  /**
+   * Uses Global varible item to set the corresponding sections of the page.
+   */
   function setPage() {
     id('item-name').textContent = "Item Name: " + item['name'];
     id('item-price').textContent = "Item Price: $" + item['price'];
     id('item-category').textContent = "Item Category: " + item['category'];
     id('detailed-description').textContent = "Description: " + item['description'];
-    //id('selected-item').setAttribute('src', );
+    if (item['src'] !== null) {
+      id('selected-item').setAttribute('src', item['src']);
+    }
   }
 
   /**
