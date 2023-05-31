@@ -22,6 +22,21 @@
     setPage();
   }
 
+  function selectReviewScore(score) {
+    switch(score) {
+      case '1':
+        return "/images/1-star.png";
+      case '2':
+        return "/images/2-star.png";
+      case '3':
+        return "/images/3-star.png";
+      case '4':
+        return "/images/4-star.png";
+      case '5':
+        return "/images/5-star.png";
+    }
+  }
+
   function createReviewCard(data) {
     let reviewCard = document.createElement('article');
     let reviewScore = document.createElement('img');
@@ -29,16 +44,17 @@
     let reviewUser = document.createElement('p');
     let reviewDate = document.createElement('p');
 
-    //reviewScore.setAttribute('src', );
+    reviewScore.setAttribute('src', selectReviewScore(data['score']));
     review.textContent = data['review'];
     reviewUser.textContent = data['username'];
     reviewDate.textContent = data['date'];
 
     reviewCard.appendChild(reviewUser);
-    //reviewCard.appendChild(reviewScore);
     reviewCard.appendChild(review);
+    reviewCard.appendChild(reviewScore);
     reviewCard.appendChild(reviewDate);
 
+    reviewDate.classList.add('date');
     reviewCard.classList.add('review');
 
     return reviewCard;
