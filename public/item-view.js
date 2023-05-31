@@ -24,15 +24,15 @@
 
   function selectReviewScore(score) {
     switch(score) {
-      case '1':
+      case 1:
         return "/images/1-star.png";
-      case '2':
+      case 2:
         return "/images/2-star.png";
-      case '3':
+      case 3:
         return "/images/3-star.png";
-      case '4':
+      case 4:
         return "/images/4-star.png";
-      case '5':
+      case 5:
         return "/images/5-star.png";
     }
   }
@@ -54,6 +54,7 @@
     reviewCard.appendChild(reviewScore);
     reviewCard.appendChild(reviewDate);
 
+    reviewScore.classList.add('score');
     reviewDate.classList.add('date');
     reviewCard.classList.add('review');
 

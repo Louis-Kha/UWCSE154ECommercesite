@@ -110,3 +110,12 @@ ul {
 .date {
   float: right;
 }
+
+.score {
+  width: 15%;
+  height: 8%;
+  border: 2px;
+  border-style: solid;
+  border-color: black;
+  background-color: lightsalmon;
+}
