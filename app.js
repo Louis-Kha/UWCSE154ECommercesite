@@ -10,6 +10,21 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(multer().none());
 
+app.get('/item-view/reviews/:item', async (req, res) => {
+  try {
+    if (req.params['item']) {
+      let db = await getDBConnection();
+      let query = "SELECT * FROM reviews WHERE item LIKE '%" + req.params['item'] + "%'";
+      let results = await db.all(query);
+      res.type('json').send({"reviews": results});
+    } else {
+      res.type('text').send("Missing item parameter, please try again!");
+    }
+  } catch (err) {
+    res.type('text').send("An error occurred on the server. Try again later.");
+  }
+});
+
 /**
  * Get request endpoint that allows all items from the store to be retrieved.
  */
@@ -19,13 +34,16 @@ app.get('/main-view/items', async (req, res) => {
     if (req.query.search) {
       let query = "SELECT * FROM store WHERE name LIKE '%" + req.query.search + "%'";
       let results = await db.all(query);
+      await db.close();
       res.type('json').send({"store": results});
     } else {
       let query = "SELECT * FROM store";
       let results = await db.all(query);
+      await db.close();
       res.type('json').send({"store": results});
     }
   } catch (err) {
+    await db.close();
     res.type('text').send("An error occurred on the server. Try again later.");
   }
 });

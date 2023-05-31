@@ -12,10 +12,80 @@
 
   window.addEventListener("load", init);
 
+  let item = JSON.parse(localStorage.getItem('item'));
+
   /**
    * adds eventlistener when webpage is loaded in.
    */
   function init() {
+    requestReviews(item['name'])
+    setPage();
+  }
+
+  function createReviewCard(data) {
+    let reviewCard = document.createElement('article');
+    let reviewScore = document.createElement('img');
+    let review = document.createElement('p');
+    let reviewUser = document.createElement('p');
+    let reviewDate = document.createElement('p');
+
+    //reviewScore.setAttribute('src', );
+    review.textContent = data['review'];
+    reviewUser.textContent = data['username'];
+    reviewDate.textContent = data['date'];
+
+    reviewCard.appendChild(reviewUser);
+    //reviewCard.appendChild(reviewScore);
+    reviewCard.appendChild(review);
+    reviewCard.appendChild(reviewDate);
+
+    return reviewCard;
+
+  }
+
+  function processReviews(data) {
+    let reviews = JSON.parse(data);
+    id('reviews').innerHTML = '';
+
+    for (let i = 0; i < reviews['reviews'].length; i++) {
+      let reviewCard = createReviewCard(reviews['reviews'][i]);
+      id('reviews').appendChild(reviewCard);
+    }
+  }
+
+  function requestReviews(item) {
+    fetch("http://localhost:8000/item-view/reviews/" + item)
+      .then(statusCheck)
+      .then(res => res.text())
+      .then(processReviews)
+      .catch(handleError);
+  }
+
+  function setPage() {
+    id('item-name').textContent = "Item Name: " + item['name'];
+    id('item-price').textContent = "Item Price: $" + item['price'];
+    id('item-category').textContent = "Item Category: " + item['category'];
+    id('detailed-description').textContent = "Description: " + item['description'];
+    //id('selected-item').setAttribute('src', );
+  }
+
+  /**
+   * Handles error.
+   */
+  function handleError(error) {
+    console.log(error);
+  }
+
+  /**
+   * This function checks the result of the promise (used from lecture)
+   * @param {Promise} res - the promise status
+   * @returns {string} - returns error message.
+   */
+  async function statusCheck(res) {
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
+    return res;
   }
 
 

@@ -23,6 +23,19 @@
   }
 
   /**
+   * Sets specific item selected into local storage to be accessed in item-view.html.
+   */
+  function storeName() {
+    localStorage.removeItem('item');
+
+    for (let i = 0; i < storeItems['store'].length; i++) {
+      if (storeItems['store'][i]['name'] === this.textContent) {
+        localStorage.setItem('item', JSON.stringify(storeItems['store'][i]));
+      }
+    }
+  }
+
+  /**
    * Get requests a JSON list of searched items.
    */
   function requestSearch() {
@@ -41,19 +54,21 @@
   function createItemCard(data) {
     let itemCard = document.createElement('article');
     let itemImage = document.createElement('img');
-    let itemName = document.createElement('p');
+    let itemName = document.createElement('a');
     let itemCatagory = document.createElement('p');
 
     //itemImage.setAttribute('src', data['src']);
     itemImage.setAttribute('alt', "Store Item Picture");
     itemName.textContent = data['name'];
-    itemCatagory.textContent = data['catagory'];
+    itemCatagory.textContent = data['category'];
 
     itemCard.appendChild(itemImage);
     itemCard.appendChild(itemName);
     itemCard.appendChild(itemCatagory);
 
     itemCard.classList.add('item');
+    itemName.href = 'http://localhost:8000/item-view.html';
+    itemName.addEventListener('click', storeName);
     return itemCard;
   }
 
@@ -63,7 +78,6 @@
    */
   function processAllItems(data) {
     storeItems = JSON.parse(data);
-    console.log(storeItems['store']);
 
     id('item-display').innerHTML = '';
     for (let i = 0; i < storeItems['store'].length; i++) {
