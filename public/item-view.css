@@ -44,6 +44,7 @@ ul {
   width: 99.8%;
   height: 840px;
   background-color: cornflowerblue;
+  font-size: 18pt;
 }
 
 #item-description, #selected-item {
@@ -90,3 +91,17 @@ ul {
   width: 20px;
 }
 
+#reviews {
+  display: flex;
+  margin-top: 1%;
+  flex-direction: column;
+}
+
+.review {
+  border: 3px;
+  padding: 12px;
+  border-style: solid;
+  border-color: black;
+  font-size: 16pt;
+  background-color: bisque;
+}
