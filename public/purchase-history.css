@@ -1,0 +1,102 @@
+/*
+ * Mitchell Ly
+ * May 4th, 2023
+ * AD, Benjamin and Kasten
+ *
+ * This is the css for the checkout-page.html. The theme is currently not set in stone yet
+ and place holder colors are currently being used. These styles mainly control the item-list
+ for all in cart items as well as how each individual item is displayed in the view.
+ */
+
+ .nav {
+  float: left;
+  list-style-type: none;
+  padding: 10px;
+  border: 2px;
+  width: 10%;
+  text-align: center;
+  border-color: black;
+  border-style: solid;
+  background-color: bisque;
+}
+
+nav {
+  height: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content:  center;
+  border: 2px;
+  border-color: black;
+  border-style: solid;
+  background-color: cornflowerblue;
+}
+
+ul {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#cart-view {
+  height: 85%;
+  width: 90%;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: gainsboro;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#page-background {
+  height: 98.7vh;
+  background-color: cornflowerblue;
+}
+
+button {
+  text-align: center;
+  display: block;
+}
+
+#cart-buttons button {
+  padding: 30px;
+  border: none;
+  border-radius: 10px;
+  margin: auto;
+  background-color: white;
+}
+
+#item-list {
+  overflow-y: scroll;
+  justify-content: space-around;
+}
+
+.item {
+  width: 15%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: gray;
+  display: flex;
+  flex-direction: column;
+  height: 350px;
+  border-radius: 10px;
+  place-items: center;
+}
+
+.item img {
+  height: 50%;
+  width: 90%;
+}
+
+h1 {
+  text-align: center;
+}
+
+.quantity-menu {
+  text-align: center;
+  background-color: blanchedalmond;
+  /* display: flex; */
+  /* background-color: white; */
+  width: 40%;
+}
