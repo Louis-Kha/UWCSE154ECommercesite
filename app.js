@@ -11,6 +11,28 @@ app.use(express.urlencoded({extended: true})); // built-in middleware
 app.use(express.json()); // built-in middleware
 app.use(multer().none()); // requires the "multer" module
 
+app.post('/item-view/rate', async (req, res) => {
+  try {
+    if (req.body.item && req.body.username && req.body.review && req.body.score) {
+      let db = await getDBConnection();
+      let query = "INSERT INTO reviews (item, username, score, review, date) VALUES ('" +
+      req.body.item + "', '" + req.body.username + "', '" + req.body.score + "', '" +
+      req.body.review + "', DATETIME())";
+      console.log(query);
+      await db.run(query);
+      await db.close();
+      res.type('text').send("Successfully Added Review!");
+    } else {
+      await db.close();
+      res.type('text').send("Missing one or more parameters, please try again!");
+    }
+  } catch (err) {
+    await db.close();
+    res.type('text').send("An error occurred on the server. Try again later.");
+  }
+});
+
+
 app.post('/login', async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;

@@ -18,8 +18,40 @@
    * adds eventlistener when webpage is loaded in.
    */
   function init() {
-    requestReviews(item['name'])
+    id('form-open-btn').addEventListener('click', formOpenButton);
+    id('form-close-btn').addEventListener('click', formCloseButton);
+    id('review-btn').addEventListener('click', requestNewReview);
+    requestReviews(item['name']);
     setPage();
+  }
+
+  /**
+   * Performs a post request to add a new review to database. Refresh page after.
+   */
+  function requestNewReview() {
+    let params = new FormData();
+    params.append("item", id("item-name").textContent);
+    params.append("username", "Hardcoded User");
+    params.append("score", id("stars").value);
+    params.append("review", id("review").value);
+    fetch("http://localhost:8000/item-view/rate", {method: 'POST', body: params})
+      .then(statusCheck)
+      .then(res => res.text())
+      .then(location.reload())
+      .catch(handleError);
+  }
+
+
+  function formCloseButton() {
+    id('form-open-btn').classList.remove('hidden');
+    id('form-close-btn').classList.add('hidden');
+    id('review-form').classList.add('hidden');
+  }
+
+  function formOpenButton() {
+    id('form-open-btn').classList.add('hidden');
+    id('form-close-btn').classList.remove('hidden');
+    id('review-form').classList.remove('hidden');
   }
 
   /**
@@ -79,11 +111,15 @@
   function processReviews(data) {
     let reviews = JSON.parse(data);
     id('reviews').innerHTML = '';
+    let averageReview = 0;
 
     for (let i = 0; i < reviews['reviews'].length; i++) {
       let reviewCard = createReviewCard(reviews['reviews'][i]);
       id('reviews').appendChild(reviewCard);
+      averageReview += parseInt(reviews['reviews'][i]['score']);
     }
+    averageReview = averageReview / reviews['reviews'].length;
+    id('item-rating').textContent = "Average Rating: " + averageReview;
   }
 
   /**

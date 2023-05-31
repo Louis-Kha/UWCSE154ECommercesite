@@ -33,6 +33,7 @@
                 <li id="item-name">Item Name Placeholder</li>
                 <li id="item-price">Item Price Placeholder</li>
                 <li id="item-category">Item Type Placeholder</li>
+                <li id="item-rating">Item Type Placeholder</li>
             </ul>
             <desc id="detailed-description">
             </desc>
@@ -44,6 +45,23 @@
         <section id="reviews">
             <p>PLACE HOLDER REVIEWS</p>
         </section>
+
+        <section id="review-form" class="hidden">
+            <label for="review"><b>Review:</b></label>
+            <textarea type="text" placeholder="Enter Review" id="review" required> </textarea>
+            <label for="stars">Select Rating:</label>
+            <select name="stars" id="stars">
+                <option value="1">1 Star</option>
+                <option value="2">2 Star</option>
+                <option value="3">3 Star</option>
+                <option value="4">4 Star</option>
+                <option value="5">5 Star</option>
+            </select>
+            <button id="review-btn">Submit</button>
+        </section>
+
+        <button id="form-open-btn">Place Review</button>
+        <button id="form-close-btn" class="hidden">Cancel</button>
 
     </body>
 
