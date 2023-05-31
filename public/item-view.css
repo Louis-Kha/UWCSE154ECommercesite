@@ -58,23 +58,35 @@ ul {
 #item-description {
   float: right;
   align-items: start;
-  height: 400px;
-  width: 850px;
-  margin-right: 50px;
+  height: 50%;
+  width: 42%;
+  margin-right: 2%;
 }
 
 #selected-item {
   float: left;
-  height: 400px;
-  width: 850px;
-  margin-left: 50px;
+  height: 50%;
+  width: 42%;
+  margin-left: 2%;
 }
 
 #detailed-description {
-  display: block;
-  margin: auto;
-  margin-top: 22%;
-  height: 400px;
-  width: 95%;
+  float: left;
+  margin-top: 2%;
+  margin-left: 2%;
+  height: 28%;
+  width: 96%;
   background-color: cornsilk;
 }
+
+
+#purchases {
+  float: center;
+  margin-top: 38%;
+  margin-left: 90%;
+}
+
+#purchase-bar {
+  width: 20px;
+}
+

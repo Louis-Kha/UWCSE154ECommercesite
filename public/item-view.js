@@ -39,6 +39,8 @@
     reviewCard.appendChild(review);
     reviewCard.appendChild(reviewDate);
 
+    reviewCard.classList.add('review');
+
     return reviewCard;
 
   }
