@@ -1,0 +1,66 @@
+<!--
+  ***
+  Mitchell Ly
+  May 4th, 2023
+  AD, Benjamin and Kasten
+
+  This is the checkout page of the website and handles the checking out. This page
+  contains the navbar, a item list view with all currently in cart items, and a clear cart
+  button and checkout button. This links to checkout-page.css where all the styling is
+  specific to this page.
+  ***
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="account-settings.css">
+    <script src="account-settings.js"></script>
+    <title>Account Settings</title>
+  </head>
+  <body id="page-background">
+    <nav>
+      <ul>
+        <li class="nav"><a href="main-view.html">Home</a></li>
+        <li class="nav"><button id="logout-button"> Logout </button></li>
+        <li class="nav"><a href="checkout-page.html">Cart</a></li>
+      </ul>
+    </nav>
+
+    <section id="login" class="hidden">
+      <h1> Login </h1>
+      <article id="error" class="hidden">
+        Incorrect Username or Password
+      </article>
+      <form>
+        <input type="text"/>
+        <input type="text"/>
+        <button id="login-button"> Log In </button>
+      </form>
+    </section>
+  <!-- <nav>
+    <ul>
+      <li class="nav"><a href="main-view.html">Home</a></li>
+      <li class="nav"><a href="purchase-history.html">Account</a></li>
+      <li class="nav"><a href="checkout-page.html">Cart</a></li>
+    </ul>
+  </nav> -->
+    <section id="purchases">
+      <h1>
+        Previous Transactions
+      </h1>
+      <div id="item-list">
+        <div>
+          <h2>
+            ORDER NUMBER: #123456
+          </h2>
+          <section class="item">
+            <h3> Item Name </h3>
+            <p> Quantity: X</p>
+            <p> Price: $10 </p>
+          </section>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

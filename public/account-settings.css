@@ -1,0 +1,144 @@
+/*
+ * Mitchell Ly
+ * May 4th, 2023
+ * AD, Benjamin and Kasten
+ *
+ * This is the css for the login-page.html. The theme is currently not set in stone yet
+ and place holder colors are currently being used. The css is very simple, with there
+ just being one centered section, where all log in input and buttons are placed.
+ */
+
+ .nav {
+  float: left;
+  list-style-type: none;
+  padding: 10px;
+  border: 2px;
+  width: 10%;
+  text-align: center;
+  border-color: black;
+  border-style: solid;
+  background-color: bisque;
+}
+
+nav {
+  height: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content:  center;
+  border: 2px;
+  border-color: black;
+  border-style: solid;
+  background-color: cornflowerblue;
+}
+
+ul {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+ #page-background {
+  height: 98.7vh;
+  background-color: cornflowerblue;
+}
+
+.login-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#error {
+  text-align: center;
+  background-color: aliceblue;
+  width: 50%;
+  padding: 20px;
+  margin: auto;
+  border-radius: 9px;
+  color: red;
+}
+
+.hidden {
+  display: none;
+}
+
+#login {
+  background-color: gray;
+  height: 75%;
+  width: 35%;
+  border-radius: 5px;
+  padding: 20px;
+  /* flex-direction: column; */
+}
+
+h1 {
+  text-align: center;
+  font-size: 48px;
+}
+
+h2 {
+  background-color: darkgray;
+  padding: 5px;
+  width: 100%;
+  margin: 0px;
+}
+
+h3 {
+  margin: 0px;
+}
+
+form {
+  justify-content: space-evenly;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+}
+
+input {
+  background-color: bisque;
+  width: 75%;
+  padding: 30px;
+  border-radius: 10px;
+  border: none;
+}
+
+#login-button {
+  width: 25%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: bisque;
+}
+
+#logout-button {
+  width: 100%;
+  height: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+#purchases {
+  height: 100%;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: gainsboro;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.item {
+  width: 10%;
+  background-color: green;
+  text-align: center;
+  padding: 5px;
+}
+
+#item-list {
+  display: block;
+  width: 100%;
+  background-color: aqua;
+}
