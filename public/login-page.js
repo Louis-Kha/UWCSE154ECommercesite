@@ -17,7 +17,6 @@
     let username = input[0].value;
     let password = input[1].value;
 
-    console.log(username + " " + password)
     fetch('login', {
       method: 'POST',
       headers: {
@@ -28,22 +27,31 @@
         "password": password
       })
     })
+      .then(statusCheck)
       .then(data => data.text())
       .then(data => {
-        if (data === "true") {
-          console.log('hi')
-          localStorage.setItem('username', username);
-          window.location.href = '/checkout-page.html';
-        } else {
-          console.log('bye')
-        }
+        console.log("hi")
+        localStorage.setItem('username', username);
+        window.location.href = '/checkout-page.html';
       })
-
-    let p = document.createElement('p');
-    p.textContent = "Hfksdjfls";
-    document.body.appendChild(p);
+      .catch(handleError)
   }
 
+  function handleError(error) {
+    let articleError = document.querySelector('article');
+    articleError.classList.remove('hidden');
+
+    setTimeout(() => {
+      articleError.classList.add('hidden');
+    }, 2000);
+  }
+
+  async function statusCheck(res) {
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
+    return res;
+  }
 
     /**
    * Returns the element that has the ID attribute with the specified value.

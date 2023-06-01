@@ -17,6 +17,20 @@
   /* max-height: 50vh; */
 }
 
+article {
+  text-align: center;
+  background-color: aliceblue;
+  width: 50%;
+  padding: 20px;
+  margin: auto;
+  border-radius: 9px;
+  color: red;
+}
+
+.hidden {
+  display: none;
+}
+
 section {
   background-color: gray;
   height: 75%;

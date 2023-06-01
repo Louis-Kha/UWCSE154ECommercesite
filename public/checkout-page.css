@@ -107,3 +107,19 @@ h1 {
   /* background-color: white; */
   width: 40%;
 }
+
+#error {
+  background-color: red;
+  margin: auto;
+  width: 50%;
+  text-align: center;
+  padding: 30px;
+  border-radius: 8px;
+  margin-top: 50px;
+  color: white;
+  font-size: 24px;
+}
+
+.hidden {
+  display: none;
+}

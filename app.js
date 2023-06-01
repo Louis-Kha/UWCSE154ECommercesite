@@ -45,18 +45,19 @@ app.post('/login', async (req, res) => {
     )`);
 
     // await db.run('DELETE FROM users WHERE username = "test"');
-    // await db.run(`INSERT INTO users (username, password) VALUES (?, ?)`, ["test", "123"]);
+    // await db.run(`INSERT INTO users (username, password) VALUES (?, ?)`, ["test1", "123"]);
     let results = await db.all('SELECT * from users WHERE username = ? AND password = ?', [username, password]);
     await db.close();
     if (results.length != 0) {
-      res.type('text').send("true");
+      res.type('text').send(results.username);
     } else {
-      res.type('text').send("false");
+      res.status(400);
+      res.type('text').send("Incorrect Uesrname or Password");
     }
   } catch (err) {
     // status code
     res.status(500);
-    res.type('text').send('something went wrong');
+    res.type('text').send('something went wsrong');
   }
 });
 
@@ -182,24 +183,28 @@ app.post('/itemview/add', async (req, res) => {
 app.post('/purchases/history/:username', async (req, res) => {
   let username = req.params.username;
   let date = req.body.date;
-  console.log(date)
-  try {
-    let db = await getDBConnection();
+  if (username) {
+    try {
+      let db = await getDBConnection();
 
-    let results;
-    if (date) {
-      results = await db.all('SELECT * FROM purchases WHERE username = ? AND date = ?', [username, date]);
-    } else {
-      results = await db.all('SELECT date FROM purchases WHERE username = ? GROUP BY date', [username]);
+      let results;
+      if (date) {
+        results = await db.all('SELECT * FROM purchases WHERE username = ? AND date = ?', [username, date]);
+      } else {
+        results = await db.all('SELECT date FROM purchases WHERE username = ? GROUP BY date', [username]);
+      }
+      await db.close();
+      res.json(results);
+
+      // await db.run('INSERT INTO cart (name, quantity, username) VALUES (?, ?, ?)', ["other", "2", username]);
+
+    } catch (err) {
+      res.status(500);
+      res.type('text').send(err);
     }
-    await db.close();
-    res.json(results);
-
-    // await db.run('INSERT INTO cart (name, quantity, username) VALUES (?, ?, ?)', ["other", "2", username]);
-
-  } catch (err) {
-    res.status(500);
-    res.type('text').send(err);
+  } else {
+    res.status(400);
+    res.type('text').send("User is not logged in");
   }
 });
 

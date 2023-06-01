@@ -7,20 +7,23 @@
    * adds eventlistener when webpage is loaded in.
    */
   function init() {
-    let button = document.createElement('button');
-    button.addEventListener
-    document.body.appendChild(button);
-    button.addEventListener('click', testButton);
+    if (localStorage.getItem('username') != null) {
+      let button = document.createElement('button');
+      button.addEventListener
+      document.body.appendChild(button);
+      button.addEventListener('click', testButton);
 
-    let cartButtons = document.getElementById('cart-buttons').querySelectorAll('button');
-    let clearButton = cartButtons[0];
-    let checkoutButton = cartButtons[1];
+      let cartButtons = document.getElementById('cart-buttons').querySelectorAll('button');
+      let clearButton = cartButtons[0];
+      let checkoutButton = cartButtons[1];
 
-    clearButton.addEventListener('click', clearCart);
-    checkoutButton.addEventListener('click', checkout);
+      clearButton.addEventListener('click', clearCart);
+      checkoutButton.addEventListener('click', checkout);
 
-    getCart();
-    getPurchases();
+      getCart();
+    } else {
+      handleNotLoggedIn();
+    }
   }
 
   function testButton() {
@@ -40,6 +43,11 @@
         let itemList = id('item-list');
         itemList.appendChild(createItem(itemName, "https://www.shutterstock.com/image-vector/common-supermarket-grocery-products-flat-260nw-1589944774.jpg", "1"));
       })
+  }
+
+  function handleNotLoggedIn() {
+    let error = document.getElementById('error');
+    error.classList.remove('hidden');
   }
 
   function checkout() {
