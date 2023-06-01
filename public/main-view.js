@@ -81,6 +81,7 @@
     let itemImage = document.createElement('img');
     let itemName = document.createElement('a');
     let itemCatagory = document.createElement('p');
+    let cartButton = document.createElement('button')
 
     if (data['src'] !== null) {
       itemImage.setAttribute('src', data['src']);
@@ -88,11 +89,14 @@
     itemImage.setAttribute('alt', "Picture of " + data['name']);
     itemName.textContent = data['name'];
     itemCatagory.textContent = data['category'];
+    cartButton.textContent = "Add to Cart";
 
     itemCard.appendChild(itemImage);
     itemCard.appendChild(itemName);
     itemCard.appendChild(itemCatagory);
+    itemCard.appendChild(cartButton);
 
+    cartButton.classList.add('cart-btn');
     itemCard.classList.add('item');
     itemImage.classList.add('item-image');
     itemName.href = 'http://localhost:8000/item-view.html';
