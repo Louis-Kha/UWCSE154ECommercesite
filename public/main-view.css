@@ -46,7 +46,7 @@ ul {
   font-size: 16pt;
 }
 
-#item-display {
+main {
   display: flex;
   flex-wrap: wrap;
   background-color: cornflowerblue;
@@ -69,4 +69,17 @@ ul {
 .item-image {
   width: 50%;
   height: 50%;
+}
+
+.hidden {
+  display: none;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  background-color: cornflowerblue;
+  height: 10%;
+  width: 10%;
+  margin: 50px;
 }

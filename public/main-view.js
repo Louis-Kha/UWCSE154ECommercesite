@@ -20,6 +20,17 @@
   function init() {
     requestItems();
     id("search-button").addEventListener("click", requestSearch);
+    id("view-button").addEventListener("click", toggleView);
+  }
+
+  function toggleView() {
+    if (id('item-display').classList.contains("hidden")) {
+      id('item-display').classList.remove("hidden");
+      id('list-display').classList.add("hidden");
+    } else {
+      id('item-display').classList.add("hidden");
+      id('list-display').classList.remove("hidden");
+    }
   }
 
   /**
@@ -97,11 +108,18 @@
     storeItems = JSON.parse(data);
 
     id('item-display').innerHTML = '';
+    id('list-display').innerHTML = '';
     for (let i = 0; i < storeItems['store'].length; i++) {
       if (id('item-display').childElementCount < 8) {
         let itemCard = createItemCard(storeItems['store'][i]);
         id('item-display').appendChild(itemCard);
       }
+    }
+
+    for (let i = 0; i < storeItems['store'].length; i++) {
+      let itemCard = createItemCard(storeItems['store'][i]);
+      itemCard.classList.add('list');
+      id('list-display').appendChild(itemCard);
     }
   }
 
