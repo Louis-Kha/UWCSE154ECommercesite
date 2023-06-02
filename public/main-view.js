@@ -32,6 +32,7 @@
    */
   function pageToZero() {
     page = 0;
+    id('next-btn').disabled = false;
   }
 
   /**
