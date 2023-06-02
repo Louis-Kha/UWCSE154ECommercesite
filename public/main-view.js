@@ -13,6 +13,7 @@
   window.addEventListener("load", init);
 
   let storeItems;
+  let page = 0;
 
   /**
    * adds eventlistener when webpage is loaded in.
@@ -20,16 +21,55 @@
   function init() {
     requestItems();
     id("search-button").addEventListener("click", requestSearch);
+    id("search-button").addEventListener("click", pageToZero);
     id("view-button").addEventListener("click", toggleView);
+    id('previous-btn').addEventListener('click', togglePage);
+    id('next-btn').addEventListener('click', togglePage);
   }
 
+  /**
+   * Sets global variable page to zero.
+   */
+  function pageToZero() {
+    page = 0;
+    id('next-btn').disabled = false;
+  }
+
+  /**
+   * Toggles page to show more items.
+   */
+  function togglePage() {
+    if (this.textContent === "Previous Page") {
+      if (page > 0) {
+        page = page - 1;
+        requestSearch();
+        if (id('item-display').childElementCount >= 1) {
+          id('next-btn').disabled = false;
+        }
+      }
+    } else if (this.textContent === "Next Page") {
+      page = page + 1;
+      requestSearch();
+      if (id('item-display').childElementCount <= 4) {
+        id('next-btn').disabled = true;
+      }
+    }
+  }
+
+  /**
+   * Toggles page view type between grid and list.
+   */
   function toggleView() {
     if (id('item-display').classList.contains("hidden")) {
       id('item-display').classList.remove("hidden");
       id('list-display').classList.add("hidden");
+      id('next-btn').classList.remove("hidden");
+      id('previous-btn').classList.remove("hidden");
     } else {
       id('item-display').classList.add("hidden");
       id('list-display').classList.remove("hidden");
+      id('next-btn').classList.add("hidden");
+      id('previous-btn').classList.add("hidden");
     }
   }
 
@@ -97,8 +137,8 @@
     itemCard.appendChild(itemCatagory);
     itemCard.appendChild(cartButton);
 
-    cartButton.classList.add('cart-btn');
     itemCard.classList.add('item');
+    cartButton.classList.add('cart-btn');
     itemImage.classList.add('item-image');
     itemName.href = 'http://localhost:8000/item-view.html';
     itemName.addEventListener('click', storeName);
@@ -132,8 +172,8 @@
     id('item-display').innerHTML = '';
     id('list-display').innerHTML = '';
     for (let i = 0; i < storeItems['store'].length; i++) {
-      if (id('item-display').childElementCount < 8) {
-        let itemCard = createItemCard(storeItems['store'][i]);
+      if (id('item-display').childElementCount < 5) {
+        let itemCard = createItemCard(storeItems['store'][i + (page * 5)]);
         id('item-display').appendChild(itemCard);
       }
     }

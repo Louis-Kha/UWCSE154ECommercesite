@@ -13,6 +13,7 @@
   window.addEventListener("load", init);
 
   let item = JSON.parse(localStorage.getItem('item'));
+  let user;
 
   /**
    * adds eventlistener when webpage is loaded in.
@@ -23,6 +24,19 @@
     id('review-btn').addEventListener('click', requestNewReview);
     requestReviews(item['name']);
     setPage();
+    isLoggedIn();
+  }
+
+  /**
+   * Checks if a user is logged in to disable or enable review button.
+   */
+  function isLoggedIn() {
+    if (localStorage.getItem('username') != null) {
+      id('form-open-btn').disabled = false;
+      user = localStorage.getItem('username')
+    } else {
+      id('form-open-btn').disabled = true;
+    }
   }
 
   /**
@@ -30,7 +44,7 @@
    */
   function requestNewReview() {
     let params = new FormData();
-    params.append("item", id("item-name").textContent);
+    params.append("item", item['name']);
     params.append("username", "Hardcoded User");
     params.append("score", id("stars").value);
     params.append("review", id("review").value);
@@ -42,12 +56,18 @@
   }
 
 
+  /**
+   * Closes form for review.
+   */
   function formCloseButton() {
     id('form-open-btn').classList.remove('hidden');
     id('form-close-btn').classList.add('hidden');
     id('review-form').classList.add('hidden');
   }
 
+  /**
+   * Opens form for review.
+   */
   function formOpenButton() {
     id('form-open-btn').classList.add('hidden');
     id('form-close-btn').classList.remove('hidden');
@@ -142,7 +162,7 @@
     id('item-price').textContent = "Item Price: $" + item['price'];
     id('item-category').textContent = "Item Category: " + item['category'];
     id('detailed-description').textContent = "Description: " + item['description'];
-    if (item['stock'] === "-1") {
+    if (item['stock'] === -1) {
       id('item-stock').textContent = "Item Stock: Limitless";
     } else {
       id('item-stock').textContent = "Item Stock: " + item['stock'];
