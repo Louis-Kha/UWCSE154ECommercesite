@@ -90,6 +90,7 @@
     itemName.textContent = data['name'];
     itemCatagory.textContent = data['category'];
     cartButton.textContent = "Add to Cart";
+    cartButton.addEventListener('click', addToCart);
 
     itemCard.appendChild(itemImage);
     itemCard.appendChild(itemName);
@@ -102,6 +103,23 @@
     itemName.href = 'http://localhost:8000/item-view.html';
     itemName.addEventListener('click', storeName);
     return itemCard;
+  }
+
+  function addToCart() {
+    let itemName = this.parentNode.querySelector('a').textContent;
+    let username = localStorage.getItem('username');
+    fetch('/itemview/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "username": username,
+        "itemName": itemName,
+      })
+    })
+      .then(() => {
+      })
   }
 
   /**

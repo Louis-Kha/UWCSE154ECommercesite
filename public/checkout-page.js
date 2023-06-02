@@ -8,17 +8,30 @@
    */
   function init() {
     if (localStorage.getItem('username') != null) {
-      let button = document.createElement('button');
-      button.addEventListener
-      document.body.appendChild(button);
-      button.addEventListener('click', testButton);
-
       let cartButtons = document.getElementById('cart-buttons').querySelectorAll('button');
       let clearButton = cartButtons[0];
       let checkoutButton = cartButtons[1];
 
+      let confirmButtonsDiv = document.getElementById('cart-buttons').querySelector('div');
+      console.log(confirmButtonsDiv)
+      let confirmButton = confirmButtonsDiv.querySelectorAll('button')[0];
+      confirmButton.addEventListener('click', () => {
+        checkout();
+        checkoutButton.classList.remove('hidden');
+        confirmButtonsDiv.classList.add('hidden');
+      });
+      let cancelButton = confirmButtonsDiv.querySelectorAll('button')[1];
+      cancelButton.addEventListener('click', () => {
+        checkoutButton.classList.remove('hidden');
+        confirmButtonsDiv.classList.add('hidden');
+      });
+
+
       clearButton.addEventListener('click', clearCart);
-      checkoutButton.addEventListener('click', checkout);
+      checkoutButton.addEventListener('click', () => {
+        checkoutButton.classList.add('hidden');
+        confirmButtonsDiv.classList.remove('hidden');
+      });
 
       getCart();
     } else {
@@ -26,58 +39,84 @@
     }
   }
 
-  function testButton() {
-    let username = localStorage.getItem('username');
-    let itemName = "test1";
-    fetch('/itemview/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "username": username,
-        "itemName": itemName
-      })
-    })
-      .then(() => {
-        let itemList = id('item-list');
-        itemList.appendChild(createItem(itemName, "https://www.shutterstock.com/image-vector/common-supermarket-grocery-products-flat-260nw-1589944774.jpg", "1"));
-      })
-  }
-
   function handleNotLoggedIn() {
     let error = document.getElementById('error');
     error.classList.remove('hidden');
   }
 
-  function checkout() {
+  function generateUID() {
+    let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let UID = "";
+
+    for (let i = 0; i < 6; i++) {
+      UID += numbers[Math.floor(Math.random() * 10)];
+    }
+    return UID;
+  }
+
+  async function checkStock() {
+    let username = localStorage.getItem('username');
+    await fetch('checkout/stock/' + username)
+      .then(data => data.text())
+      .then(data => {
+        if (data === "Sufficient Stock") {
+          return true;
+        } else {
+          return false;
+        }
+      })
+  }
+
+  async function checkout() {
     const currentDate = new Date();
     const isoString = currentDate.toISOString();
     const format = isoString.replace('T', ' ');
     const END = 19;
     const formattedDate = format.slice(0, END);
 
-    let username = localStorage.getItem('username');
-
-    console.log('huih');
-    let allItems = document.querySelectorAll('.item');
-    for (let i = 0; i< allItems.length; i++) {
-      let itemName = allItems[i].querySelector('h2').textContent;
-      let quantity = allItems[i].querySelector('.quantity-menu').querySelector('h3').textContent;
-      fetch('/checkout/buy', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "username": username,
-          "quantity": quantity,
-          "itemName": itemName,
-          "date": formattedDate
+    if (checkStock()) {
+      let username = localStorage.getItem('username');
+      let allItems = document.querySelectorAll('.item');
+      let uid = generateUID();
+      let isUnique = false;
+      await fetch('checkout/uid?uid=' + uid)
+        .then(data => data.text())
+        .then(data => {
+          if (data === '0') {
+            isUnique =  true;
+          }
         })
-      })
-      .then(data => data.text())
-      .then(clearCart);
+      while (!isUnique) {
+        uid = generateUID();
+        await fetch('checkout/uid?uid=' + uid)
+        .then(data => data.text())
+        .then(data => {
+          if (data === '0') {
+            isUnique =  true;
+          }
+        })
+      }
+      for (let i = 0; i< allItems.length; i++) {
+        let itemName = allItems[i].querySelector('h2').textContent;
+        let quantity = allItems[i].querySelector('.quantity-menu').querySelector('h3').textContent.split(':')[1];
+        await fetch('/checkout/buy', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "username": username,
+            "quantity": quantity,
+            "itemName": itemName,
+            "date": formattedDate,
+            'uid': uid
+          })
+        })
+        .then(data => data.text())
+      }
+      clearCart();
+    } else {
+      alert('no good');
     }
   }
 
@@ -90,7 +129,7 @@
         for (let i = 0; i < data.length; i++) {
           // fetch('/item/' + data[i].name)
           //   .then()
-          itemList.appendChild(createItem(data[i].itemName, "https://www.shutterstock.com/image-vector/common-supermarket-grocery-products-flat-260nw-1589944774.jpg", data[i].quantity));
+          itemList.appendChild(createItem(data[i].name, data[i].src, data[i].quantity, data[i].price));
           console.log(data[i]);
         }
       });
@@ -140,13 +179,17 @@
     // this.parentNode.remove();
   }
 
-  function createItem(itemName, itemsrc, itemQuantity) {
+  function createItem(itemName, itemsrc, itemQuantity, itemPrice) {
     let article = document.createElement('article');
     article.classList.add('item');
 
     let nameHeader = document.createElement('h2');
     nameHeader.textContent = itemName;
     article.appendChild(nameHeader);
+
+    let priceHeader = document.createElement('h3');
+    priceHeader.textContent = "Price: $" + itemPrice;
+    article.appendChild(priceHeader);
 
     let itemImage = document.createElement('img');
     itemImage.src = itemsrc;

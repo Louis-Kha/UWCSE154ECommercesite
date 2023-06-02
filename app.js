@@ -18,7 +18,6 @@ app.post('/item-view/rate', async (req, res) => {
       let query = "INSERT INTO reviews (item, username, score, review, date) VALUES ('" +
       req.body.item + "', '" + req.body.username + "', '" + req.body.score + "', '" +
       req.body.review + "', DATETIME())";
-      console.log(query);
       await db.run(query);
       await db.close();
       res.type('text').send("Successfully Added Review!");
@@ -43,9 +42,10 @@ app.post('/login', async (req, res) => {
       username TEXT,
       password TEXT
     )`);
+    // await db.run(' users');
 
     // await db.run('DELETE FROM users WHERE username = "test"');
-    // await db.run(`INSERT INTO users (username, password) VALUES (?, ?)`, ["test1", "123"]);
+    await db.run(`INSERT INTO users (username, password) VALUES (?, ?)`, ["test1", "123"]);
     let results = await db.all('SELECT * from users WHERE username = ? AND password = ?', [username, password]);
     await db.close();
     if (results.length != 0) {
@@ -61,18 +61,49 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.get('/checkout/cart/:username', async (req, res) => {
+app.get('/checkout/stock/:username', async (req, res) => {
   let username = req.params.username;
   try {
     let db = await getDBConnection();
+    let results = await db.all("SELECT * FROM cart, store WHERE cart.username = ? " +
+      "AND cart.itemName = store.name AND (cart.quantity > store.stock) AND store.stock != -1",
+      [username]);
+    if (results.length != 0) {
+      res.status(400);
+      res.type('text').send('Error: Insufficient Stock');
+    } else {
+      res.type('text').send('Sufficient Stock');
+    }
+  } catch (err) {
+    res.status(500);
+    res.type('text').send('something went wrong');
+  }
+})
+
+app.get('/checkout/cart/:username', async (req, res) => {
+  let username = req.params.username;
+  console.log(username)
+  try {
+    let db = await getDBConnection();
+
+    await db.run(`CREATE TABLE IF NOT EXISTS purchases (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      itemName TEXT,
+      quantity INTEGER,
+      username TEXT,
+      date TIMESTAMP,
+      uid INTEGER
+    )`);
     await db.run(`CREATE TABLE IF NOT EXISTS cart (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       itemName TEXT,
       quantity INTEGER,
       username TEXT
     )`);
+
+
     // await db.run('INSERT INTO cart (name, quantity, username) VALUES (?, ?, ?)', ["other", "2", username]);
-    let results = await db.all(`SELECT * FROM cart WHERE username = ?`, [username]);
+    let results = await db.all(`SELECT store.name, store.price, store.src, cart.quantity FROM cart, store WHERE cart.username = ? AND cart.itemName = store.name`, [username]);
     await db.close();
     res.json(results);
   } catch (err) {
@@ -116,6 +147,7 @@ app.post('/checkout/buy', async (req, res) => {
   let itemName = req.body.itemName;
   let quantity = req.body.quantity;
   let date = req.body.date;
+  let uid = req.body.uid;
   try {
     let db = await getDBConnection();
     await db.run(`CREATE TABLE IF NOT EXISTS purchases (
@@ -123,11 +155,13 @@ app.post('/checkout/buy', async (req, res) => {
       itemName TEXT,
       quantity INTEGER,
       username TEXT,
-      date TIMESTAMP
+      date TIMESTAMP,
+      uid INTEGER
     )`);
-    await db.run('INSERT INTO purchases (itemName, quantity, username, date) VALUES (?, ?, ?, ?)', [itemName, quantity, username, date]);
+
+    await db.run('INSERT INTO purchases (itemName, quantity, username, date, uid) VALUES (?, ?, ?, ?, ?)', [itemName, quantity, username, date, uid]);
     await db.close();
-    res.type('text').send("Purchased item: " + itemName);
+    res.type('text').send(uid);
 
 
   } catch (err) {
@@ -136,11 +170,29 @@ app.post('/checkout/buy', async (req, res) => {
   }
 });
 
+app.get('/checkout/uid', async (req, res) => {
+  try {
+    let db = await getDBConnection();
+    let uid = req.query.uid;
+    let results = await db.all('SELECT * FROM purchases WHERE uid = ?', [uid])
+    if (results.length === 0) {
+      res.type('text').send('0');
+    } else {
+      res.type('text').send('1')
+    }
+  } catch (err) {
+    res.status(500);
+    res.type('text').send(err);
+  }
+})
+
+
 app.post('/checkout/clear', async (req, res) => {
   let username = req.body.username;
   try {
     let db = await getDBConnection();
     let results = await db.get('DELETE FROM cart WHERE username = ?', [username]);
+
     await db.close();
     res.type('text').send("cleared");
 
@@ -157,6 +209,8 @@ app.post('/itemview/add', async (req, res) => {
   let username = req.body.username;
   try {
     let db = await getDBConnection();
+
+    console.log("create table")
     await db.run(`CREATE TABLE IF NOT EXISTS cart (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       itemName TEXT,
@@ -164,8 +218,11 @@ app.post('/itemview/add', async (req, res) => {
       username TEXT
     )`);
 
+    console.log(itemName);
+    console.log(username);
     let results = await db.all('SELECT * FROM cart WHERE itemName = ? AND username = ?', [itemName, username]);
 
+    console.log("after check")
     if (results.length != 0) {
       await db.run('UPDATE cart SET quantity = ? WHERE itemName = ? AND username = ?', [parseInt(results[0].quantity) + 1, itemName, username]);
       res.type('text').send("Increased " + itemName + " by 1 in cart");
@@ -173,6 +230,7 @@ app.post('/itemview/add', async (req, res) => {
       await db.run('INSERT INTO cart (itemName, username, quantity) VALUES (?, ?, 1)', [itemName, username]);
       res.type('text').send("Added item into cart" + itemName);
     }
+    console.log("finish")
     await db.close();
   } catch (err) {
     res.status(500);
@@ -180,20 +238,25 @@ app.post('/itemview/add', async (req, res) => {
   }
 });
 
-app.post('/purchases/history/:username', async (req, res) => {
+app.get('/purchases/history/:username', async (req, res) => {
   let username = req.params.username;
-  let date = req.body.date;
+  let uid = req.query.uid;
   if (username) {
     try {
       let db = await getDBConnection();
-
       let results;
-      if (date) {
-        results = await db.all('SELECT * FROM purchases WHERE username = ? AND date = ?', [username, date]);
+      // console.log("here");
+      if (uid) {
+        // console.log("here1");
+        results = await db.all('SELECT purchases.itemName, purchases.quantity, store.price, store.src, purchases.date FROM purchases, store WHERE username = ? AND uid = ? AND purchases.itemName = store.name', [username, uid]);
+        // console.log("here2");
       } else {
-        results = await db.all('SELECT date FROM purchases WHERE username = ? GROUP BY date', [username]);
+        // console.log("here3");
+        results = await db.all('SELECT uid FROM purchases WHERE username = ? GROUP BY date ORDER BY date DESC', [username]);
+        // console.log("here4");
       }
       await db.close();
+      console.log(results);
       res.json(results);
 
       // await db.run('INSERT INTO cart (name, quantity, username) VALUES (?, ?, ?)', ["other", "2", username]);
@@ -252,7 +315,6 @@ app.get('/main-view/items', async (req, res) => {
       res.type('json').send({"store": results});
     }
   } catch (err) {
-    await db.close();
     res.type('text').send("An error occurred on the server. Try again later.");
   }
 });

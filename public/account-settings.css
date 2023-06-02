@@ -83,6 +83,10 @@ h2 {
   margin: 0px;
 }
 
+.end {
+  margin-bottom: 25px;
+}
+
 h3 {
   margin: 0px;
 }
@@ -120,8 +124,8 @@ input {
   display: none;
 }
 
-#purchases {
-  height: 100%;
+#purchases-background {
+  height: fit-content;
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
@@ -130,15 +134,31 @@ input {
   padding: 10px;
 }
 
-.item {
+.item-info {
+  margin-top: 5px;
   width: 10%;
-  background-color: green;
+  background-color: red;
   text-align: center;
-  padding: 5px;
+  padding: 8px;
+  border-radius: 8px;
+  margin-right: 8px;
+  margin-bottom: 5px;
 }
 
 #item-list {
-  display: block;
   width: 100%;
-  background-color: aqua;
+  background-color: lightgray;
+}
+
+img {
+  width: 100%;
+}
+
+.single-transaction {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.order-number {
+  display: flex;
 }
