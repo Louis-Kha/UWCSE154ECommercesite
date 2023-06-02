@@ -27,6 +27,9 @@
     isLoggedIn();
   }
 
+  /**
+   * Checks if a user is logged in to disable or enable review button.
+   */
   function isLoggedIn() {
     if (localStorage.getItem('username') != null) {
       id('form-open-btn').disabled = false;
@@ -53,12 +56,18 @@
   }
 
 
+  /**
+   * Closes form for review.
+   */
   function formCloseButton() {
     id('form-open-btn').classList.remove('hidden');
     id('form-close-btn').classList.add('hidden');
     id('review-form').classList.add('hidden');
   }
 
+  /**
+   * Opens form for review.
+   */
   function formOpenButton() {
     id('form-open-btn').classList.add('hidden');
     id('form-close-btn').classList.remove('hidden');

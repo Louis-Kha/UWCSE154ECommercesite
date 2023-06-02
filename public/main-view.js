@@ -27,10 +27,16 @@
     id('next-btn').addEventListener('click', togglePage);
   }
 
+  /**
+   * Sets global variable page to zero.
+   */
   function pageToZero() {
     page = 0;
   }
 
+  /**
+   * Toggles page to show more items.
+   */
   function togglePage() {
     if (this.textContent === "Previous Page") {
       if (page > 0) {
@@ -49,6 +55,9 @@
     }
   }
 
+  /**
+   * Toggles page view type between grid and list.
+   */
   function toggleView() {
     if (id('item-display').classList.contains("hidden")) {
       id('item-display').classList.remove("hidden");
