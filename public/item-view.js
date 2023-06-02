@@ -13,6 +13,7 @@
   window.addEventListener("load", init);
 
   let item = JSON.parse(localStorage.getItem('item'));
+  let user;
 
   /**
    * adds eventlistener when webpage is loaded in.
@@ -23,6 +24,16 @@
     id('review-btn').addEventListener('click', requestNewReview);
     requestReviews(item['name']);
     setPage();
+    isLoggedIn();
+  }
+
+  function isLoggedIn() {
+    if (localStorage.getItem('username') != null) {
+      id('form-open-btn').disabled = false;
+      user = localStorage.getItem('username')
+    } else {
+      id('form-open-btn').disabled = true;
+    }
   }
 
   /**
