@@ -59,6 +59,10 @@ main {
   align-items: center;
 }
 
+#list-display {
+  height: auto;
+}
+
 .item {
   font-size: 16pt;
   display: flex;

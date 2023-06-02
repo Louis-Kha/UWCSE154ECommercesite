@@ -161,11 +161,9 @@
     }
 
     for (let i = 0; i < storeItems['store'].length; i++) {
-      if (id('list-display').childElementCount < 12) {
-        let itemCard = createItemCard(storeItems['store'][i]);
-        itemCard.classList.add('list');
-        id('list-display').appendChild(itemCard);
-      }
+      let itemCard = createItemCard(storeItems['store'][i]);
+      itemCard.classList.add('list');
+      id('list-display').appendChild(itemCard);
     }
   }
 
