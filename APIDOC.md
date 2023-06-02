@@ -1,25 +1,31 @@
 ### Name: Get Item Information
-* Request Format: /:itemID
+* Request Format: /main-view/items
 * Side Effects: None
 * Request Type: GET
+* Parameters: Search, Category
 * Description: Gets an item's information, such as price and name, picture, type, etc.
-* Example Request: /0001
+* Example Request: /main-view/items
+* Example Request: /main-view/items?search=ba
 * Return Type: JSON Object
 * Example Response:
 ```json
 {
-  "name": "Banana",
-  "price": "$1.20",
-  "picture": "/items/banana.png",
-  "type": "fruit",
-  "description": "A potassium-filled fruit!"
+  "store": [
+    {
+      "id": 1,
+      "name": "Banana",
+      "price": "0.65",
+      "category": "Fruit",
+      "description": "A Delicious yellow elongated fruit rich in potassium.",
+      "stock": -1,
+      "src": "https://images.heb.com/is/image/HEBGrocery/000377497"
+    }
+  ]
 }
 ```
 * Error Handling:
-* Possible 400 (invalid request) error (all plain text):
-  * "Item ID does not match any item in store."
 * Possible 500 Request (all plain text):
-  * "Trouble reaching website, try again at another time."
+  * "An error occurred on the server. Try again later."
 
 ### Name: Get Account Information
 * Description: Gets all account information such as account name, purchase history, balance
@@ -27,7 +33,7 @@
 * Method: GET
 * Parameters: Account ID
 * Return Type: JSON Object
-* Example Request: .../123 
+* Example Request: .../123
 * Example Response
 ```json
 {
@@ -54,32 +60,36 @@
 ```
 
 ### Name: Get Reviews
-* Request Format: /:itemID/reviews
+* Request Format: /item-view/reviews/:item
 * Side Effects: None
 * Request Type: GET
 * Return Data Format: JSON Object
 * Description: Gets all user reviews for an item
-* Example Request: /:itemID/reviews
+* Example Request: /item-view/reviews/:item
 * Example Response:
 ```json
 {
-  "userid": "12345"
-  "review": "This banana is very delicious and filled with potassium!"
-  "rating": "5"
+  "reviews": [
+    {
+      "item": "Banana",
+      "username": "Carlos",
+      "score": 4,
+      "review": "I like the color of it when it ripens.",
+      "date": "2023-05-29 06:25:12"
+    }
+  ]
 }
 ```
 * Error Handling:
 * Possible 400 (invalid request) error (all plain text):
-  * "Item ID does not match any item in store."
-* Possible 400 (invalid request) error (all plain text):
-  * "Item does not have any reviews."
+  * "Missing item parameter, please try again!"
 * Possible 500 Request (all plain text):
-  * "Trouble reaching website, try again at another time."
+  * "An error occurred on the server. Try again later."
 
 ### POST
 
-### Name: Log in 
-* Description: Allows the user to log in 
+### Name: Log in
+* Description: Allows the user to log in
 * Side Effects: None
 * Method: POST
 * Parameters: Form Data (Email, Password)
@@ -131,17 +141,18 @@
 
 
 ### Name: Post reviews
-* Request Format: /review endpoint with POST parameters of "itemID" and "score" and "review" and "userID"
+* Request Format: /rate endpoint with POST parameters of "item" and "username" and "review" and "score"
 * Request Type: POST
 * Returned Data Format: Plain Text
 * Description: Allows user to post a review of an item
-* Parameters: Form Data (Item ID, Account ID, review)
+* Parameters: Form Data (item, username, review, score)
 * Return Type: Promise
-* Example Request: /review endpoint with POST parameters of itemid=00001 and score=5 and review="its pretty good" and userid=12345
-* Example Response: "Review Successfully Posted!"
+* Example Request: /review endpoint with POST parameters of item=Banana and username=carlos and review="its pretty good" and score=5
+* Example Response: "Successfully Added Review!"
 * Error Handling:
   * Possible 400 (invalid request) errors (all plain text):
-    * If missing itemid, an error is returned with the message: "No Item selected to review"
-    * If missing score, an error is returned with the message: "No score given to item"
-    * If missing review, an error is returned with the message: "No review written for item"
-    * If missing userid, an error is returned with the message: "Invalid user, log in to post review"
+    * If missing itemid, an error is returned with the message: "Missing one or more parameters, please try again!"
+    * If missing score, an error is returned with the message: "Missing one or more parameters, please try again!"
+    * If missing review, an error is returned with the message: "Missing one or more parameters, please try again!"
+  * Possible 500 Request (all plain text):
+    * "An error occurred on the server. Try again later."
