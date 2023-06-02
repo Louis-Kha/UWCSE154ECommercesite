@@ -17,4 +17,26 @@ CREATE TABLE "store" (
 	PRIMARY KEY("id" AUTOINCREMENT)
 )
 
+CREATE TABLE cart (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      itemName TEXT,
+      quantity INTEGER,
+      username TEXT
+    )
+
+CREATE TABLE purchases (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      itemName TEXT,
+      quantity INTEGER,
+      username TEXT,
+      date TIMESTAMP,
+      uid INTEGER
+    )
+
+CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT,
+      password TEXT
+    )
+
 CREATE TABLE sqlite_sequence(name,seq)
