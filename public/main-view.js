@@ -50,7 +50,7 @@
     } else if (this.textContent === "Next Page") {
       page = page + 1;
       requestSearch();
-      if (id('item-display').childElementCount < 5) {
+      if (id('item-display').childElementCount <= 4) {
         id('next-btn').disabled = true;
       }
     }

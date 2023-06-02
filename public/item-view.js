@@ -44,7 +44,7 @@
    */
   function requestNewReview() {
     let params = new FormData();
-    params.append("item", id("item-name").textContent);
+    params.append("item", item['name']);
     params.append("username", "Hardcoded User");
     params.append("score", id("stars").value);
     params.append("review", id("review").value);
@@ -162,7 +162,7 @@
     id('item-price').textContent = "Item Price: $" + item['price'];
     id('item-category').textContent = "Item Category: " + item['category'];
     id('detailed-description').textContent = "Description: " + item['description'];
-    if (item['stock'] === "-1") {
+    if (item['stock'] === -1) {
       id('item-stock').textContent = "Item Stock: Limitless";
     } else {
       id('item-stock').textContent = "Item Stock: " + item['stock'];
