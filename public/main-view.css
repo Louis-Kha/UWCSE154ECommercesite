@@ -24,7 +24,7 @@ nav {
   height: 5%;
   display: flex;
   flex-direction: column;
-  justify-content:  center;
+  justify-content: center;
   border: 2px;
   border-color: black;
   border-style: solid;
@@ -85,7 +85,7 @@ main {
   visibility: hidden;
 }
 
-.list{
+.list {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
