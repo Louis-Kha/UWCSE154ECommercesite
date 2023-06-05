@@ -244,5 +244,4 @@
   function qsa(query) {
     return document.querySelectorAll(query);
   }
-
 })();
