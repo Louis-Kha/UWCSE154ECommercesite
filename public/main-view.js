@@ -145,6 +145,9 @@
     return itemCard;
   }
 
+  /**
+   * Post request to allow user to add item to cart.
+   */
   function addToCart() {
     let itemName = this.parentNode.querySelector('a').textContent;
     let username = localStorage.getItem('username');
