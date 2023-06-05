@@ -11,6 +11,9 @@ app.use(express.urlencoded({extended: true})); // built-in middleware
 app.use(express.json()); // built-in middleware
 app.use(multer().none()); // requires the "multer" module
 
+/**
+ * a POST request that allows users to add reviews to the database.
+ */
 app.post('/item-view/rate', async (req, res) => {
   try {
     if (req.body.item && req.body.username && req.body.review && req.body.score) {
@@ -206,7 +209,6 @@ app.get('/checkout/uid', async (req, res) => {
   }
 })
 
-
 app.post('/checkout/clear', async (req, res) => {
   let username = req.body.username;
   try {
@@ -291,6 +293,9 @@ app.get('/purchases/history/:username', async (req, res) => {
   }
 });
 
+/**
+ * Get request that retrieves all reviews from the database.
+ */
 app.get('/item-view/reviews/:item', async (req, res) => {
   try {
     if (req.params['item']) {
