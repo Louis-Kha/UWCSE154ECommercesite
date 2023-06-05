@@ -245,5 +245,4 @@
     return document.querySelectorAll(query);
   }
 
-
 })();
