@@ -45,7 +45,7 @@
   function requestNewReview() {
     let params = new FormData();
     params.append("item", item['name']);
-    params.append("username", "Hardcoded User");
+    params.append("username", localStorage.getItem('username'));
     params.append("score", id("stars").value);
     params.append("review", id("review").value);
     fetch("http://localhost:8000/item-view/rate", {method: 'POST', body: params})
