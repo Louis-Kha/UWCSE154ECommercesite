@@ -66,8 +66,11 @@ app.get('/checkout/stock/:username', async (req, res) => {
   try {
     let db = await getDBConnection();
     let results = await db.all("SELECT * FROM cart, store WHERE cart.username = ? " +
-      "AND cart.itemName = store.name AND (cart.quantity > store.stock) AND store.stock != -1",
+      "AND cart.itemName = store.name AND cart.quantity > store.stock AND store.stock != -1",
       [username]);
+
+    console.log(results);
+    console.log(results.length);
     if (results.length != 0) {
       res.status(400);
       res.type('text').send('Error: Insufficient Stock');
@@ -79,6 +82,25 @@ app.get('/checkout/stock/:username', async (req, res) => {
     res.type('text').send('something went wrong');
   }
 })
+
+app.post('/checkout/changeStock', async (req, res) => {
+  let itemName = req.body.itemName;
+  let username = req.body.username;
+  let stock = req.body.stock;
+  try {
+    let db = await getDBConnection();
+
+    let results = await db.run('UPDATE store SET stock = stock - ? ' +
+      'WHERE name = ? AND stock != -1', [stock, itemName]);
+
+    await db.close();
+    res.type('text').send("New stock is");
+
+  } catch (err) {
+    res.status(500);
+    res.type('text').send(err);
+  }
+});
 
 app.get('/checkout/cart/:username', async (req, res) => {
   let username = req.params.username;
@@ -133,8 +155,6 @@ app.post('/checkout/quantity', async (req, res) => {
     }
     await db.close();
     res.type('text').send(quantity.toString());
-
-    // await db.run('INSERT INTO cart (name, quantity, username) VALUES (?, ?, ?)', ["other", "2", username]);
 
   } catch (err) {
     res.status(500);

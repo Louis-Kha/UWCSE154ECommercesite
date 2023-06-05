@@ -56,15 +56,16 @@
 
   async function checkStock() {
     let username = localStorage.getItem('username');
-    await fetch('checkout/stock/' + username)
+    return await fetch('checkout/stock/' + username)
       .then(data => data.text())
       .then(data => {
+        console.log(data)
         if (data === "Sufficient Stock") {
           return true;
         } else {
           return false;
         }
-      })
+      });
   }
 
   async function checkout() {
@@ -74,7 +75,9 @@
     const END = 19;
     const formattedDate = format.slice(0, END);
 
-    if (checkStock()) {
+    let bool = await checkStock();
+    console.log(bool + "bool");
+    if (bool) {
       let username = localStorage.getItem('username');
       let allItems = document.querySelectorAll('.item');
       let uid = generateUID();
@@ -113,10 +116,22 @@
           })
         })
         .then(data => data.text())
+
+        await fetch('/checkout/changeStock', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "itemName": itemName,
+            "username": username,
+            "stock": quantity
+          })
+        });
       }
       clearCart();
     } else {
-      alert('no good');
+
     }
   }
 
@@ -130,7 +145,6 @@
           // fetch('/item/' + data[i].name)
           //   .then()
           itemList.appendChild(createItem(data[i].name, data[i].src, data[i].quantity, data[i].price));
-          console.log(data[i]);
         }
       });
   }
@@ -152,12 +166,12 @@
       })
   }
 
-  function changeQuantity() {
+  async function changeQuantity() {
     let itemName = this.parentNode.parentNode.querySelector('h2').textContent;
     let username = localStorage.getItem('username');
     let flag = this.textContent;
 
-    fetch('/checkout/quantity', {
+    await fetch('/checkout/quantity', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

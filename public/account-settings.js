@@ -43,7 +43,7 @@
       .then(data => {
         console.log("hi")
         localStorage.setItem('username', username);
-        window.location.href = '/checkout-page.html';
+        window.location.href = '/main-view.html';
       })
       .catch(handleError)
   }
