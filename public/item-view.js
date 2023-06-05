@@ -13,7 +13,6 @@
   window.addEventListener("load", init);
 
   let item = JSON.parse(localStorage.getItem('item'));
-  let user;
 
   /**
    * adds eventlistener when webpage is loaded in.
@@ -31,11 +30,10 @@
    * Checks if a user is logged in to disable or enable review button.
    */
   function isLoggedIn() {
-    if (localStorage.getItem('username') != null) {
-      id('form-open-btn').disabled = false;
-      user = localStorage.getItem('username')
-    } else {
+    if (localStorage.getItem('username') === null) {
       id('form-open-btn').disabled = true;
+    } else {
+      id('form-open-btn').disabled = false;
     }
   }
 
@@ -54,7 +52,6 @@
       .then(location.reload())
       .catch(handleError);
   }
-
 
   /**
    * Closes form for review.
@@ -80,7 +77,7 @@
    * @returns {String} - img src corresponding to review score.
    */
   function selectReviewScore(score) {
-    switch(score) {
+    switch (score) {
       case 1:
         return "/images/1-star.png";
       case 2:
@@ -144,10 +141,10 @@
 
   /**
    * Get request with item query parameter to recieve JSON object of item.
-   * @param {String} item - Name of the item being requested.
+   * @param {String} itemName - Name of the item being requested.
    */
-  function requestReviews(item) {
-    fetch("http://localhost:8000/item-view/reviews/" + item)
+  function requestReviews(itemName) {
+    fetch("http://localhost:8000/item-view/reviews/" + itemName)
       .then(statusCheck)
       .then(res => res.text())
       .then(processReviews)
@@ -173,10 +170,12 @@
   }
 
   /**
-   * Handles error.
+   * Processes error from failed function.
+   * @param {String} err - Error message from failed function.
+   * @returns {String} err - The error message from the failed function.
    */
-  function handleError(error) {
-    console.log(error);
+  function handleError(err) {
+    return err;
   }
 
   /**
@@ -191,31 +190,12 @@
     return res;
   }
 
-
-    /**
+  /**
    * Returns the element that has the ID attribute with the specified value.
    * @param {string} id - element ID.
    * @returns {object} - DOM object associated with id.
    */
-    function id(id) {
-      return document.getElementById(id);
-    }
-
-    /**
-     * Returns first element matching selector.
-     * @param {string} selector - CSS query selector.
-     * @returns {object} - DOM object associated selector.
-     */
-    function qs(selector) {
-      return document.querySelector(selector);
-    }
-
-    /**
-     * Returns the array of elements that match the given CSS selector.
-     * @param {string} query - CSS query selector
-     * @returns {object[]} array of DOM objects matching the query.
-     */
-    function qsa(query) {
-      return document.querySelectorAll(query);
-    }
+  function id(id) {
+    return document.getElementById(id);
+  }
 })();

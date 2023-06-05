@@ -92,22 +92,22 @@
   function requestSearch() {
     if (id('category-bar').value === "None") {
       fetch("http://localhost:8000/main-view/items?search=" + id('search-bar').value)
-      .then(statusCheck)
-      .then(res => res.text())
-      .then(processAllItems)
-      .catch(handleError);
-    } else if (id('search-bar').value === '' && id('category-bar').value !== "None"){
+        .then(statusCheck)
+        .then(res => res.text())
+        .then(processAllItems)
+        .catch(handleError);
+    } else if (id('search-bar').value === '' && id('category-bar').value !== "None") {
       fetch("http://localhost:8000/main-view/items?category=" + id('category-bar').value)
-      .then(statusCheck)
-      .then(res => res.text())
-      .then(processAllItems)
-      .catch(handleError);
+        .then(statusCheck)
+        .then(res => res.text())
+        .then(processAllItems)
+        .catch(handleError);
     } else if (id('search-bar').value !== '' && id('category-bar').value !== "None") {
       fetch("http://localhost:8000/main-view/items?category=" + id('category-bar').value + "&search=" + id('search-bar').value)
-      .then(statusCheck)
-      .then(res => res.text())
-      .then(processAllItems)
-      .catch(handleError);
+        .then(statusCheck)
+        .then(res => res.text())
+        .then(processAllItems)
+        .catch(handleError);
     }
   }
 
@@ -121,7 +121,7 @@
     let itemImage = document.createElement('img');
     let itemName = document.createElement('a');
     let itemCatagory = document.createElement('p');
-    let cartButton = document.createElement('button')
+    let cartButton = document.createElement('button');
 
     if (data['src'] !== null) {
       itemImage.setAttribute('src', data['src']);
@@ -158,11 +158,9 @@
       },
       body: JSON.stringify({
         "username": username,
-        "itemName": itemName,
+        "itemName": itemName
       })
-    })
-      .then(() => {
-      })
+    });
   }
 
   /**
@@ -200,10 +198,12 @@
   }
 
   /**
-   * Handles error.
+   * Processes error from failed function.
+   * @param {String} err - Error message from failed function.
+   * @returns {String} err - The error message from the failed function.
    */
-  function handleError() {
-    console.log("error");
+  function handleError(err) {
+    return err;
   }
 
   /**
@@ -225,23 +225,5 @@
    */
   function id(id) {
     return document.getElementById(id);
-  }
-
-  /**
-   * Returns first element matching selector.
-   * @param {string} selector - CSS query selector.
-   * @returns {object} - DOM object associated selector.
-   */
-  function qs(selector) {
-    return document.querySelector(selector);
-  }
-
-  /**
-   * Returns the array of elements that match the given CSS selector.
-   * @param {string} query - CSS query selector
-   * @returns {object[]} array of DOM objects matching the query.
-   */
-  function qsa(query) {
-    return document.querySelectorAll(query);
   }
 })();
