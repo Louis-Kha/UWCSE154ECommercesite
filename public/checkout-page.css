@@ -47,6 +47,7 @@ ul {
 }
 
 #page-background {
+  font-family: 'Poppins', sans-serif;
   height: 98.7vh;
   background-color: #E8EEF2;
 }
