@@ -24,6 +24,29 @@
     requestReviews(item['name']);
     setPage();
     isLoggedIn();
+    id('purchase-btn').addEventListener('click', addToCart);
+  }
+
+  /**
+   * Post request to allow user to add item to cart.
+   */
+  function addToCart() {
+    let itemName =
+      this.parentNode.parentNode.querySelector('#item-description')
+        .querySelector('li').textContent.split(':')[1].trim();
+    let username = localStorage.getItem('username');
+    fetch('/itemview/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "username": username,
+        "itemName": itemName
+      })
+    })
+      .then(statusCheck)
+      .catch(handleError);
   }
 
   /**
