@@ -72,8 +72,6 @@ app.get('/checkout/stock/:username', async (req, res) => {
       "AND cart.itemName = store.name AND cart.quantity > store.stock AND store.stock != -1",
       [username]);
 
-    console.log(results);
-    console.log(results.length);
     if (results.length != 0) {
       res.status(400);
       res.type('text').send('Error: Insufficient Stock');

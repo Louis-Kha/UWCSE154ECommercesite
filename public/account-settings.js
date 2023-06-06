@@ -7,7 +7,7 @@
    * adds eventlistener when webpage is loaded in.
    */
   function init() {
-    if (localStorage.getItem('username') != null) {
+    if (localStorage.getItem('username') !== null) {
       let loginScreen = document.getElementById('login');
       loginScreen.classList.add('hidden');
 
@@ -17,11 +17,15 @@
     } else {
       handleNotLoggedIn();
     }
-    // getPurchases();
+
     let logOut = document.querySelector('button');
-    logOut.addEventListener('click', handleLogout)
+    logOut.addEventListener('click', handleLogout);
   }
 
+  /**
+   * dadsa
+   * @param {*} event - Re
+   */
   function handleLogin(event) {
     event.preventDefault();
     let input = this.parentNode.querySelectorAll('input');
@@ -40,15 +44,17 @@
     })
       .then(statusCheck)
       .then(data => data.text())
-      .then(data => {
-        console.log("hi")
+      .then(() => {
         localStorage.setItem('username', username);
         window.location.href = '/main-view.html';
       })
-      .catch(handleError)
+      .catch(handleError);
   }
 
-  function handleError(error) {
+  /**
+   *  t
+   */
+  function handleError() {
     let articleError = document.querySelector('article');
     articleError.classList.remove('hidden');
 
@@ -57,6 +63,11 @@
     }, 2000);
   }
 
+  /**
+   * a
+   * @param {*} res -a
+   * @returns {statusCheck} - fds
+   */
   async function statusCheck(res) {
     if (!res.ok) {
       throw new Error(await res.text());
@@ -64,14 +75,20 @@
     return res;
   }
 
+  /**
+   * f
+   */
   function handleLogout() {
     localStorage.removeItem('username');
     handleNotLoggedIn();
   }
 
+  /**
+   * JJ
+   */
   function handleNotLoggedIn() {
     let pageBackground = document.getElementById('page-background');
-    pageBackground.classList.add('login-background')
+    pageBackground.classList.add('login-background');
     let loginScreen = document.getElementById('login');
     loginScreen.classList.remove('hidden');
     let loginButton = document.getElementById('login-button');
@@ -80,15 +97,18 @@
     let navBar = document.querySelector('nav');
     navBar.classList.add('hidden');
 
-    loginButton.addEventListener('click', handleLogin)
+    loginButton.addEventListener('click', handleLogin);
   }
 
+  /**
+   * fds
+   */
   function getPurchases() {
     let username = localStorage.getItem('username');
     fetch('/purchases/history/' + username)
       .then(data => data.json())
       .then(async data => {
-        let itemList = id('all-purchases');
+        let itemList = document.getElementById('all-purchases');
         for (let i = 0; i < data.length; i++) {
           await fetch('/purchases/history/' + username + "?uid=" + data[i].uid)
             .then(singleDate => singleDate.json())
@@ -99,9 +119,14 @@
       });
   }
 
+  /**
+   * a
+   * @param {string} orderNumber - ordersds
+   * @param {*} allItems - items
+   * @returns {HTMLElement} - fs
+   */
   function createPurchaseCard(orderNumber, allItems) {
     let entirePurchase = document.createElement('article');
-    // entirePurchase.id = "all-purchases";
 
     let order = document.createElement('div');
     order.classList.add('order-number');
@@ -153,6 +178,10 @@
     return entirePurchase;
   }
 
+  /**
+   * sadsa
+   * @returns {String} - asda
+   */
   function generateUID() {
     let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let UID = "";
@@ -163,6 +192,9 @@
     return UID;
   }
 
+  /**
+   * fds
+   */
   async function repurchase() {
     const currentDate = new Date();
     const isoString = currentDate.toISOString();
@@ -211,39 +243,11 @@
       .then(data => {
       });
     }
-    let itemList = id('all-purchases');
+    let itemList = document.getElementById('all-purchases');
     await fetch('/purchases/history/' + username + "?uid=" + uid)
       .then(singleDate => singleDate.json())
       .then(purchase => {
         itemList.prepend(createPurchaseCard(uid, purchase));
       })
   }
-
-  /**
- * Returns the element that has the ID attribute with the specified value.
- * @param {string} id - element ID.
- * @returns {object} - DOM object associated with id.
- */
-  function id(id) {
-    return document.getElementById(id);
-  }
-
-  /**
-   * Returns first element matching selector.
-   * @param {string} selector - CSS query selector.
-   * @returns {object} - DOM object associated selector.
-   */
-  function qs(selector) {
-    return document.querySelector(selector);
-  }
-
-  /**
-   * Returns the array of elements that match the given CSS selector.
-   * @param {string} query - CSS query selector
-   * @returns {object[]} array of DOM objects matching the query.
-   */
-  function qsa(query) {
-    return document.querySelectorAll(query);
-  }
-
 })();

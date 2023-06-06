@@ -7,13 +7,12 @@
    * adds eventlistener when webpage is loaded in.
    */
   function init() {
-    if (localStorage.getItem('username') != null) {
+    if (localStorage.getItem('username') !== null) {
       let cartButtons = document.getElementById('cart-buttons').querySelectorAll('button');
       let clearButton = cartButtons[0];
       let checkoutButton = cartButtons[1];
 
       let confirmButtonsDiv = document.getElementById('cart-buttons').querySelector('div');
-      console.log(confirmButtonsDiv)
       let confirmButton = confirmButtonsDiv.querySelectorAll('button')[0];
       confirmButton.addEventListener('click', () => {
         checkout();
@@ -39,11 +38,18 @@
     }
   }
 
+  /**
+   * a
+   */
   function handleNotLoggedIn() {
     let error = document.getElementById('error');
     error.classList.remove('hidden');
   }
 
+  /**
+   * a
+   * @returns {String} - a
+   */
   function generateUID() {
     let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let UID = "";
@@ -54,20 +60,26 @@
     return UID;
   }
 
+  /**
+   * a
+   * @returns {boolean} - as
+   */
   async function checkStock() {
     let username = localStorage.getItem('username');
-    return await fetch('checkout/stock/' + username)
+    let results = await fetch('checkout/stock/' + username)
       .then(data => data.text())
       .then(data => {
-        console.log(data)
         if (data === "Sufficient Stock") {
           return true;
-        } else {
-          return false;
         }
+        return false;
       });
+    return results;
   }
 
+  /**
+   * f
+   */
   async function checkout() {
     const currentDate = new Date();
     const isoString = currentDate.toISOString();
@@ -135,20 +147,26 @@
     }
   }
 
+  /**
+   * f
+   */
   function getCart() {
     let username = localStorage.getItem('username');
     fetch('/checkout/cart/' + username)
       .then(data => data.json())
       .then(data => {
-        let itemList = id('item-list');
+        let itemList = document.getElementById('item-list');
         for (let i = 0; i < data.length; i++) {
-          // fetch('/item/' + data[i].name)
-          //   .then()
-          itemList.appendChild(createItem(data[i].name, data[i].src, data[i].quantity, data[i].price));
+          itemList.appendChild(
+            createItem(data[i].name, data[i].src, data[i].quantity, data[i].price)
+          );
         }
       });
   }
 
+  /**
+   * s
+   */
   function clearCart() {
     let username = localStorage.getItem('username');
     fetch('/checkout/clear', {
@@ -157,15 +175,18 @@
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        "username": username,
+        "username": username
       })
     })
       .then(() => {
-        let itemList = id('item-list');
+        let itemList = document.getElementById('item-list');
         itemList.innerHTML = "";
-      })
+      });
   }
 
+  /**
+   * a
+   */
   async function changeQuantity() {
     let itemName = this.parentNode.parentNode.querySelector('h2').textContent;
     let username = localStorage.getItem('username');
@@ -188,11 +209,17 @@
         if (data === "0") {
           this.parentNode.parentNode.remove();
         }
-      })
-
-    // this.parentNode.remove();
+      });
   }
 
+  /**
+   * a
+   * @param {String} itemName - a
+   * @param {String} itemsrc - a
+   * @param {String} itemQuantity - a
+   * @param {String} itemPrice - a
+   * @returns {HTMLElement} - a
+   */
   function createItem(itemName, itemsrc, itemQuantity, itemPrice) {
     let article = document.createElement('article');
     article.classList.add('item');
@@ -228,32 +255,4 @@
     article.appendChild(div);
     return article;
   }
-
-  /**
- * Returns the element that has the ID attribute with the specified value.
- * @param {string} id - element ID.
- * @returns {object} - DOM object associated with id.
- */
-  function id(id) {
-    return document.getElementById(id);
-  }
-
-  /**
-   * Returns first element matching selector.
-   * @param {string} selector - CSS query selector.
-   * @returns {object} - DOM object associated selector.
-   */
-  function qs(selector) {
-    return document.querySelector(selector);
-  }
-
-  /**
-   * Returns the array of elements that match the given CSS selector.
-   * @param {string} query - CSS query selector
-   * @returns {object[]} array of DOM objects matching the query.
-   */
-  function qsa(query) {
-    return document.querySelectorAll(query);
-  }
-
 })();
