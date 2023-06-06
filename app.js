@@ -34,6 +34,9 @@ app.post('/item-view/rate', async (req, res) => {
   }
 });
 
+/**
+ * POST request that allows a user to attempt to log in
+ */
 app.post('/login', async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
@@ -57,7 +60,7 @@ app.post('/login', async (req, res) => {
       res.type('text').send(results.username);
     } else {
       res.status(userError);
-      res.type('text').send("Incorrect Uesrname or Password");
+      res.type('text').send("Incorrect Username or Password");
     }
   } catch (err) {
     res.status(serverError);
@@ -65,6 +68,10 @@ app.post('/login', async (req, res) => {
   }
 });
 
+/**
+ * GET request that checks if any item in the current user's cart has too much quantity
+ * compared to the available stock
+ */
 app.get('/checkout/stock/:username', async (req, res) => {
   let username = req.params.username;
   try {
@@ -87,6 +94,10 @@ app.get('/checkout/stock/:username', async (req, res) => {
   }
 });
 
+/**
+ * GET request that checks if any item in the user's current repurchase has too much
+ * quantity compared to the available stock
+ */
 app.get('/purchases/stock/:username/:orderNumber', async (req, res) => {
   let username = req.params.username;
   let orderNumber = req.params.orderNumber;
@@ -111,6 +122,9 @@ app.get('/purchases/stock/:username/:orderNumber', async (req, res) => {
   }
 });
 
+/**
+ * Post request that changes the stock by decrementing it by the quantity just bought
+ */
 app.post('/checkout/changeStock', async (req, res) => {
   let itemName = req.body.itemName;
   let stock = req.body.stock;
@@ -121,7 +135,7 @@ app.post('/checkout/changeStock', async (req, res) => {
       'WHERE name = ? AND stock != -1', [stock, itemName]);
 
     await db.close();
-    res.type('text').send("New stock is");
+    res.type('text').send("Stock changed");
 
   } catch (err) {
     res.status(serverError);
@@ -129,6 +143,9 @@ app.post('/checkout/changeStock', async (req, res) => {
   }
 });
 
+/**
+ * GET Request that gets the entire cart of items for the current user
+ */
 app.get('/checkout/cart/:username', async (req, res) => {
   let username = req.params.username;
   try {
@@ -147,6 +164,9 @@ app.get('/checkout/cart/:username', async (req, res) => {
   }
 });
 
+/**
+ * This decrements or increments the specified item's quantity by 1 in the cart
+ */
 app.post('/checkout/quantity', async (req, res) => {
   let itemName = req.body.itemName;
   let username = req.body.username;
@@ -179,6 +199,9 @@ app.post('/checkout/quantity', async (req, res) => {
   }
 });
 
+/**
+ * POST request that takes a user current cart and inserts all of it into their purchase history
+ */
 app.post('/checkout/buy', async (req, res) => {
   let username = req.body.username;
   let itemName = req.body.itemName;
@@ -209,6 +232,9 @@ app.post('/checkout/buy', async (req, res) => {
   }
 });
 
+/**
+ * This checks whether or not the current UID is a unique one or not
+ */
 app.get('/checkout/uid', async (req, res) => {
   try {
     let db = await getDBConnection();
@@ -225,6 +251,9 @@ app.get('/checkout/uid', async (req, res) => {
   }
 });
 
+/**
+ * This clears the user's current cart
+ */
 app.post('/checkout/clear', async (req, res) => {
   let username = req.body.username;
   try {
@@ -240,6 +269,9 @@ app.post('/checkout/clear', async (req, res) => {
   }
 });
 
+/**
+ * This adds an item to the current user's cart
+ */
 app.post('/itemview/add', async (req, res) => {
   let itemName = req.body.itemName;
   let username = req.body.username;
@@ -270,6 +302,9 @@ app.post('/itemview/add', async (req, res) => {
   }
 });
 
+/**
+ * This gets the purchase history for the current user
+ */
 app.get('/purchases/history/:username', async (req, res) => {
   let username = req.params.username;
   let uid = req.query.uid;
@@ -368,4 +403,3 @@ app.use(express.static('public'));
 const myPort = 8000;
 const PORT = process.env.PORT || myPort;
 app.listen(PORT);
-
