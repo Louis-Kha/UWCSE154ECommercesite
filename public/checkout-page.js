@@ -24,14 +24,11 @@
         checkoutButton.classList.remove('hidden');
         confirmButtonsDiv.classList.add('hidden');
       });
-
-
       clearButton.addEventListener('click', clearCart);
       checkoutButton.addEventListener('click', () => {
         checkoutButton.classList.add('hidden');
         confirmButtonsDiv.classList.remove('hidden');
       });
-
       getCart();
     } else {
       handleNotLoggedIn();
@@ -89,7 +86,6 @@
     const formattedDate = format.slice(0, END);
 
     let bool = await checkStock();
-    console.log(bool + "bool");
     if (bool) {
       let username = localStorage.getItem('username');
       let allItems = document.querySelectorAll('.item');

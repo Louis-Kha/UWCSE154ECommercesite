@@ -39,6 +39,7 @@
    * Toggles page to show more items.
    */
   function togglePage() {
+    const count = 4;
     if (this.textContent === "Previous Page") {
       if (page > 0) {
         page = page - 1;
@@ -50,7 +51,7 @@
     } else if (this.textContent === "Next Page") {
       page = page + 1;
       requestSearch();
-      if (id('item-display').childElementCount <= 4) {
+      if (id('item-display').childElementCount <= count) {
         id('next-btn').disabled = true;
       }
     }
@@ -169,12 +170,12 @@
    */
   function processAllItems(data) {
     storeItems = JSON.parse(data);
-
+    const count = 5;
     id('item-display').innerHTML = '';
     id('list-display').innerHTML = '';
     for (let i = 0; i < storeItems['store'].length; i++) {
-      if (id('item-display').childElementCount < 5) {
-        let itemCard = createItemCard(storeItems['store'][i + (page * 5)]);
+      if (id('item-display').childElementCount < count) {
+        let itemCard = createItemCard(storeItems['store'][i + (page * count)]);
         id('item-display').appendChild(itemCard);
       }
     }

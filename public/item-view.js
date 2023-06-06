@@ -77,6 +77,8 @@
    * @returns {String} - img src corresponding to review score.
    */
   function selectReviewScore(score) {
+    const caseFour = 4;
+    const caseFive = 5;
     switch (score) {
       case 1:
         return "/images/1-star.png";
@@ -84,9 +86,9 @@
         return "/images/2-star.png";
       case 3:
         return "/images/3-star.png";
-      case 4:
+      case caseFour:
         return "/images/4-star.png";
-      case 5:
+      case caseFive:
         return "/images/5-star.png";
     }
   }

@@ -109,24 +109,28 @@
   function getPurchases() {
     let username = localStorage.getItem('username');
     fetch('/purchases/history/' + username)
+      .then(statusCheck)
       .then(data => data.json())
       .then(async data => {
         let itemList = document.getElementById('all-purchases');
         for (let i = 0; i < data.length; i++) {
           await fetch('/purchases/history/' + username + "?uid=" + data[i].uid)
+            .then(statusCheck)
             .then(singleDate => singleDate.json())
             .then(allItems => {
               itemList.append(createPurchaseCard(data[i].uid, allItems));
             })
+            .catch(handleError);
         }
-      });
+      })
+      .catch(handleError);
   }
 
   /**
    * a
    * @param {string} orderNumber - ordersds
-   * @param {*} allItems - items
-   * @returns {HTMLElement} - fs
+   * @param {*} allItems - All Items for a single purchase
+   * @returns {HTMLElement} - The entire HTML element for a single purchase
    */
   function createPurchaseCard(orderNumber, allItems) {
     let entirePurchase = document.createElement('article');
@@ -149,6 +153,22 @@
     itemContainer.classList.add('single-transaction');
     entirePurchase.appendChild(itemContainer);
 
+    createItems(allItems, itemContainer);
+
+    let dateHeader = document.createElement('h2');
+    dateHeader.textContent = "Made on " + allItems[0].date;
+    dateHeader.classList.add('end');
+    entirePurchase.appendChild(dateHeader);
+
+    return entirePurchase;
+  }
+
+  /**
+   * This creates all the individual item cards for each item
+   * @param {HTMLElement} allItems - All Items for a single purchase
+   * @param {HTMLElement} itemContainer - Where the items are stored
+   */
+  function createItems(allItems, itemContainer) {
     for (let i = 0; i < allItems.length; i++) {
       let itemSection = document.createElement('section');
       itemSection.classList.add('item-info');
@@ -157,9 +177,9 @@
       nameHeader.textContent = allItems[i].itemName;
       itemSection.appendChild(nameHeader);
 
-      let itemImage = document.createElement('img')
+      let itemImage = document.createElement('img');
       itemImage.src = allItems[i].src;
-      itemImage.alt = "Picture for " + allItems[i].itemName
+      itemImage.alt = "Picture for " + allItems[i].itemName;
       itemSection.append(itemImage);
 
       let quantity = document.createElement('p');
@@ -172,13 +192,6 @@
 
       itemContainer.append(itemSection);
     }
-
-    let dateHeader = document.createElement('h2');
-    dateHeader.textContent = "Made on " + allItems[0].date;
-    dateHeader.classList.add('end');
-    entirePurchase.appendChild(dateHeader);
-
-    return entirePurchase;
   }
 
   /**
@@ -186,34 +199,34 @@
    * @returns {String} - The generated UID
    */
   async function generateUID() {
-    let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let UID = "";
+    const codeLength = 6;
 
     let isUnique = false;
-    for (let i = 0; i < 6; i++) {
-      UID += numbers[Math.floor(Math.random() * 10)];
+    for (let i = 0; i < codeLength; i++) {
+      UID += numbers[Math.floor(Math.random() * numbers.length)];
     }
 
     await fetch('checkout/uid?uid=' + UID)
-      .then(data => data.text())
+      .then(statusCheck)
       .then(data => {
-        if (data === '0') {
-          isUnique = true;
-        }
-      });
+        isUnique = data.text() === '0';
+      })
+      .then(handleError);
 
     while (!isUnique) {
       UID = "";
-      for (let i = 0; i < 6; i++) {
-        UID += numbers[Math.floor(Math.random() * 10)];
+      for (let i = 0; i < codeLength; i++) {
+        UID += numbers[Math.floor(Math.random() * numbers.length)];
       }
       await fetch('checkout/uid?uid=' + UID)
+        .then(statusCheck)
         .then(data => data.text())
         .then(data => {
-          if (data === '0') {
-            isUnique = true;
-          }
-        });
+          isUnique = data.text() === '0';
+        })
+        .then(handleError);
     }
     return UID;
   }
@@ -221,26 +234,33 @@
   /**
    * This function checks the stock availability of all items
    * for the user and gives an error if any items in the cart don't have enough stock
+   * @param {String} orderNumber - orderNumber for the purchase we are checking
    * @returns {boolean} - Whether or not stock is available
    */
-  async function checkStock() {
+  async function checkStock(orderNumber) {
     let username = localStorage.getItem('username');
-    let results = await fetch('checkout/stock/' + username)
+    let results = await fetch('purchases/stock/' + username + "/" + orderNumber)
+      .then(statusCheck)
       .then(data => data.text())
       .then(data => {
         if (data === "Sufficient Stock") {
           return true;
         }
         return false;
-      });
+      })
+      .catch(handleOutOfStock);
     return results;
   }
 
   /**
-   *
+   * This purchases and puts the purchased items into the database
+   * @param {HTMLElement} allItems - HTML Element of each item
+   * @param {String} username - username string
+   * @param {String} formattedDate - Current date formatted correctly
+   * @param {String} uid - New unique id for the purchase
    */
   async function checkout(allItems, username, formattedDate, uid) {
-    for (let i = 0; i< allItems.length; i++) {
+    for (let i = 0; i < allItems.length; i++) {
       let itemName = allItems[i].querySelector('h3').textContent;
       let quantity = allItems[i].querySelector('p').textContent.split(':')[1];
       await fetch('/checkout/buy', {
@@ -257,15 +277,53 @@
         })
       })
         .then(statusCheck)
-        .catch(handleError)
+        .catch(handleError);
     }
   }
+
+  /**
+   * This function displays an error message if an item is out of stock
+   */
+  function handleOutOfStock() {
+    let errorMessage = document.createElement('p');
+    errorMessage.textContent = "Error: Some Item is out of Stock";
+    errorMessage.classList.add('error');
+    let body = document.getElementById('purchases-background');
+    body.prepend(errorMessage);
+
+    const seconds = 2000;
+
+    setTimeout(() => {
+      errorMessage.classList.add('hidden');
+    }, seconds);
+  }
+
+  /**
+   * This function displays an error message whenever an unknown error occurs
+   */
+  function handleError() {
+    let error = document.createElement('p');
+    error.textContent = "Error Occured";
+    error.classList.add('error');
+
+    document.body.prepend(error);
+
+    const seconds = 2000;
+
+    setTimeout(() => {
+      error.classList.add('hidden');
+    }, seconds);
+  }
+
   /**
    * This allows a user to completely repurchase a previous transaction they had already
    * made before and displays an error if there is not enough stock.
    */
   async function repurchase() {
-    let bool = await checkStock();
+    let orderNumber =
+      this.parentNode.parentNode.querySelector('.order-number')
+        .querySelector('h2').textContent.split('#')[1];
+    let bool = await checkStock(orderNumber);
     if (bool) {
       const currentDate = new Date();
       const isoString = currentDate.toISOString();
@@ -274,17 +332,21 @@
       const formattedDate = format.slice(0, END);
 
       let username = localStorage.getItem('username');
-      let allItems = this.parentNode.parentNode.querySelector('.single-transaction').querySelectorAll('.item-info');
-      let uid = generateUID();
+      let allItems = this.parentNode.parentNode.querySelector('.single-transaction')
+        .querySelectorAll('.item-info');
+      let uid = await generateUID();
+      checkout(allItems, username, formattedDate, uid);
 
       let itemList = document.getElementById('all-purchases');
-      await fetch('/purchases/history/' + username + "?uid=" + uid)
+      await fetch('/purchases/history/' + username + "?uid=" + orderNumber)
+        .then(statusCheck)
         .then(singleDate => singleDate.json())
         .then(purchase => {
           itemList.prepend(createPurchaseCard(uid, purchase));
         })
+        .catch(handleError);
     } else {
-
+      handleOutOfStock();
     }
   }
 })();
