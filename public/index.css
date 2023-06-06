@@ -16,7 +16,7 @@
   text-align: center;
   border-color: black;
   border-style: solid;
-  background-color: bisque;
+  background-color: #F5F3F5;
 }
 
 nav {
@@ -27,7 +27,7 @@ nav {
   border: 2px;
   border-color: black;
   border-style: solid;
-  background-color: cornflowerblue;
+  background-color: #37393A;
 }
 
 ul {
@@ -38,7 +38,7 @@ ul {
 #page-background {
   font-family: 'Poppins', sans-serif;
   height: 98.7vh;
-  background-color: cornflowerblue;
+  background-color: #E8EEF2;
 }
 
 .login-background {
@@ -62,7 +62,7 @@ ul {
 }
 
 #login {
-  background-color: gray;
+  background-color: #D6C9C9;
   height: 75%;
   width: 35%;
   border-radius: 5px;
@@ -76,7 +76,8 @@ h1 {
 }
 
 h2 {
-  background-color: darkgray;
+  background-color: #37393A;
+  color: white;
   padding: 5px;
   width: 100%;
   margin: 0px;
@@ -132,7 +133,7 @@ input {
 .item-info {
   margin-top: 5px;
   width: 10%;
-  background-color: red;
+  background-color: #D6C9C9;
   text-align: center;
   padding: 8px;
   border-radius: 8px;
