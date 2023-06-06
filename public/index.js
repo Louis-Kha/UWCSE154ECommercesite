@@ -143,7 +143,7 @@
     orderHeader.textContent = "ORDER NUMBER: #" + orderNumber;
     order.appendChild(orderHeader);
 
-    let repurchaseButton = document.createElement('button')
+    let repurchaseButton = document.createElement('button');
     repurchaseButton.textContent = "Repurchase";
     repurchaseButton.addEventListener('click', repurchase);
     order.appendChild(repurchaseButton);

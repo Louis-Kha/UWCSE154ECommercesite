@@ -58,7 +58,7 @@ ul {
   font-size: 16pt;
 }
 
-main {
+article {
   display: flex;
   flex-wrap: wrap;
   background-color: cornflowerblue;

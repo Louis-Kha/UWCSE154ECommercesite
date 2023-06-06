@@ -133,23 +133,6 @@ app.get('/checkout/cart/:username', async (req, res) => {
   let username = req.params.username;
   try {
     let db = await getDBConnection();
-
-    // await db.run(`CREATE TABLE IF NOT EXISTS purchases (
-    //   id INTEGER PRIMARY KEY AUTOINCREMENT,
-    //   itemName TEXT,
-    //   quantity INTEGER,
-    //   username TEXT,
-    //   date TIMESTAMP,
-    //   uid INTEGER
-    // )`);
-    // await db.run(`CREATE TABLE IF NOT EXISTS cart (
-    //   id INTEGER PRIMARY KEY AUTOINCREMENT,
-    //   itemName TEXT,
-    //   quantity INTEGER,
-    //   username TEXT
-    // )`);
-
-    // await db.run('INSERT INTO cart (name, quantity, username) VALUES (?, ?, ?)', ["other", "2", username]);
     let results =
       await db.all(
         'SELECT store.name, store.price, store.src, cart.quantity FROM cart, store WHERE ' +
@@ -262,14 +245,6 @@ app.post('/itemview/add', async (req, res) => {
   let username = req.body.username;
   try {
     let db = await getDBConnection();
-
-    // await db.run(`CREATE TABLE IF NOT EXISTS cart (
-    //   id INTEGER PRIMARY KEY AUTOINCREMENT,
-    //   itemName TEXT,
-    //   quantity INTEGER,
-    //   username TEXT
-    // )`);
-
     let results = await db.all(
       'SELECT * FROM cart WHERE itemName = ? AND username = ?',
       [itemName, username]
