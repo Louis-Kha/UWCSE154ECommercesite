@@ -61,8 +61,9 @@
   }
 
   /**
-   * a
-   * @returns {boolean} - as
+   * This function checks the stock availability of all items
+   * for the user and gives an error if any items in the cart don't have enough stock
+   * @returns {boolean} - Whether or not stock is available
    */
   async function checkStock() {
     let username = localStorage.getItem('username');

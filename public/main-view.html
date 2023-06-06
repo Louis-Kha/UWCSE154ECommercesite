@@ -11,48 +11,42 @@
 -->
 
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="main-view.css">
-        <script src="main-view.js"></script>
-        <title>Main View</title>
-    </head>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="main-view.css">
+    <script src="main-view.js"></script>
+    <title>Main View</title>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li class="nav"><a href="main-view.html">Home</a></li>
+        <li class="nav"><a href="index.html">Account</a></li>
+        <li class="nav"><a href="checkout-page.html">Cart</a></li>
+      </ul>
+    </nav>
 
-    <body>
-        <nav>
-            <ul>
-                <li class="nav"><a href="main-view.html">Home</a></li>
-                <li class="nav"><a href="account-settings.html">Account</a></li>
-                <li class="nav"><a href="checkout-page.html">Cart</a></li>
-            </ul>
-        </nav>
-
-        <nav id="search-category-filter">
-            <label for="search-bar">Search:</label>
-            <input id="search-bar" type="text">
-            <label for="category-bar">category:</label>
-            <select name="category-bar" id="category-bar">
-                <option value ="None">None</option>
-                <option value ="Meat">Meat</option>
-                <option value ="Vegatable">Vegatable</option>
-                <option value ="Beverage">Beverage</option>
-                <option value ="Hardware">Hardware</option>
-                <option value ="Furniture">Furniture</option>
-                <option value ="Appliance">Appliance</option>
-            </select>
-            <button id="search-button">Search</button>
-            <button id="view-button">Toggle View</button>
-        </nav>
-
-        <main id="item-display">
-        </main>
-
-        <main id="list-display" class="hidden">
-        </main>
-
-        <button id="previous-btn">Previous Page</button>
-        <button id="next-btn">Next Page</button>
-
-    </body>
-
+    <nav id="search-category-filter">
+      <label for="search-bar">Search:</label>
+      <input id="search-bar" type="text">
+      <label for="category-bar">category:</label>
+      <select name="category-bar" id="category-bar">
+        <option value ="None">None</option>
+        <option value ="Meat">Meat</option>
+        <option value ="Vegatable">Vegatable</option>
+        <option value ="Beverage">Beverage</option>
+        <option value ="Hardware">Hardware</option>
+        <option value ="Furniture">Furniture</option>
+        <option value ="Appliance">Appliance</option>
+      </select>
+      <button id="search-button">Search</button>
+      <button id="view-button">Toggle View</button>
+    </nav>
+    <main id="item-display">
+    </main>
+    <main id="list-display" class="hidden">
+    </main>
+    <button id="previous-btn">Previous Page</button>
+    <button id="next-btn">Next Page</button>
+  </body>
 </html>
