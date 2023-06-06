@@ -1,3 +1,12 @@
+/*
+ * Name: Mitchell Ly
+ * Date: 5/7/2023
+ * Section: CSE 154 AD
+ * TA: Benjamin and Kasten
+ * The javascript index file used to add functionality to index.html. This allows the
+ * user to log in and also repurchase previous purchases.
+ */
+
 "use strict";
 (function() {
 

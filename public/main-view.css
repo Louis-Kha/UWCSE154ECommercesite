@@ -7,6 +7,9 @@
   This main-view.css file will be used for styling
   Styles the page to properly display content such as the NAV bar.
 */
+.joke {
+  font-family: 'Yuji Hentaigana Akari', cursive;
+}
 
 .nav {
   float: left;

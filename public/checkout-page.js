@@ -1,3 +1,12 @@
+/*
+ * Name: Mitchell Ly
+ * Date: 5/7/2023
+ * Section: CSE 154 AD
+ * TA: Benjamin and Kasten
+ * The javascript index file used to add functionality to main-view.html. This also
+ * populates the page with all items in the cart and also displays error messages
+ */
+
 "use strict";
 (function() {
 

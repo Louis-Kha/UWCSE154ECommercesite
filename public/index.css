@@ -3,10 +3,10 @@
  * May 4th, 2023
  * AD, Benjamin and Kasten
  *
- * This is the css for the login-page.html. The theme is currently not set in stone yet
- and place holder colors are currently being used. The css is very simple, with there
- just being one centered section, where all log in input and buttons are placed.
+ * This is the css for the index.html. This mainly just styles the nav bar, main view,
+ * and login screen. This also has styling for error messages as well.
  */
+
 .nav {
   float: left;
   list-style-type: none;
@@ -36,6 +36,7 @@ ul {
 }
 
 #page-background {
+  font-family: 'Poppins', sans-serif;
   height: 98.7vh;
   background-color: cornflowerblue;
 }

@@ -84,7 +84,7 @@ ul {
   margin-top: 10px;
   margin-left: 10px;
   margin-right: 10px;
-  background-color: gray;
+  background-color: red;
   display: flex;
   flex-direction: column;
   height: 425px;
@@ -103,7 +103,6 @@ h1 {
 
 .quantity-menu {
   text-align: center;
-  background-color: blanchedalmond;
   width: 40%;
 }
 

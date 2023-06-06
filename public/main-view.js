@@ -167,6 +167,39 @@
   }
 
   /**
+   * This is for the prank
+   * @param {String} src - Picture src
+   * @param {String} name - Description??
+   * @returns {HTMLElement} - The card containing all the information
+   */
+  function createTACard(src, name) {
+    let itemCard = document.createElement('article');
+    itemCard.classList.add('joke');
+    let itemImage = document.createElement('img');
+    let itemName = document.createElement('a');
+    let itemCatagory = document.createElement('p');
+    let cartButton = document.createElement('button');
+    cartButton.textContent = "Priceless";
+
+    itemImage.setAttribute('src', src);
+
+    itemImage.setAttribute('alt', "Picture of Marina");
+    itemName.textContent = name;
+    itemCatagory.textContent = "TA";
+
+    itemCard.appendChild(itemImage);
+    itemCard.appendChild(itemName);
+    itemCard.appendChild(itemCatagory);
+    itemCard.appendChild(cartButton);
+
+    itemCard.classList.add('item');
+    cartButton.classList.add('cart-btn');
+    itemImage.classList.add('item-image');
+
+    return itemCard;
+  }
+
+  /**
    * Processes the store item data to be uploaded to the main-view.
    * @param {JSON} data - JSON of entire store items.
    */
@@ -192,12 +225,15 @@
   /**
    * Get requests a JSON list of all items.
    */
-  function requestItems() {
-    fetch("http://localhost:8000/main-view/items")
+  async function requestItems() {
+    await fetch("http://localhost:8000/main-view/items")
       .then(statusCheck)
       .then(res => res.text())
       .then(processAllItems)
       .catch(handleError);
+    id('item-display').appendChild(createTACard("./images/lhs1.jpeg", "Birdy Logo"));
+    id('item-display').appendChild(createTACard("./images/lhs2.jpeg", "Scary Bird Mascot"));
+    id('item-display').appendChild(createTACard("./images/lhs3.jpeg", "Entire School"));
   }
 
   /**
