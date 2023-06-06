@@ -4,7 +4,8 @@
   window.addEventListener("load", init);
 
   /**
-   * adds eventlistener when webpage is loaded in.
+   * adds eventlistener when webpage is loaded in and displays the correct page
+   * depending if the user is logged in or not
    */
   function init() {
     if (localStorage.getItem('username') !== null) {
@@ -127,7 +128,7 @@
   }
 
   /**
-   * a
+   * This creates the purchase card for all previous purchases
    * @param {string} orderNumber - ordersds
    * @param {*} allItems - All Items for a single purchase
    * @returns {HTMLElement} - The entire HTML element for a single purchase
@@ -210,10 +211,11 @@
 
     await fetch('checkout/uid?uid=' + UID)
       .then(statusCheck)
+      .then(data => data.text())
       .then(data => {
-        isUnique = data.text() === '0';
+        isUnique = data === '0';
       })
-      .then(handleError);
+      .catch(handleError);
 
     while (!isUnique) {
       UID = "";
@@ -224,9 +226,9 @@
         .then(statusCheck)
         .then(data => data.text())
         .then(data => {
-          isUnique = data.text() === '0';
+          isUnique = data === '0';
         })
-        .then(handleError);
+        .catch(handleError);
     }
     return UID;
   }
@@ -286,7 +288,7 @@
    */
   function handleOutOfStock() {
     let errorMessage = document.createElement('p');
-    errorMessage.textContent = "Error: Some Item is out of Stock";
+    errorMessage.textContent = "Error: Some Item has insufficient stock";
     errorMessage.classList.add('error');
     let body = document.getElementById('purchases-background');
     body.prepend(errorMessage);
@@ -345,8 +347,6 @@
           itemList.prepend(createPurchaseCard(uid, purchase));
         })
         .catch(handleError);
-    } else {
-      handleOutOfStock();
     }
   }
 })();

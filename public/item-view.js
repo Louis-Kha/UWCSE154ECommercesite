@@ -172,12 +172,20 @@
   }
 
   /**
-   * Processes error from failed function.
-   * @param {String} err - Error message from failed function.
-   * @returns {String} err - The error message from the failed function.
+   * This function displays an error message whenever an unknown error occurs
    */
-  function handleError(err) {
-    return err;
+  function handleError() {
+    let error = document.createElement('p');
+    error.textContent = "Error Occured";
+    error.classList.add('error');
+
+    document.body.prepend(error);
+
+    const seconds = 2000;
+
+    setTimeout(() => {
+      error.classList.add('hidden');
+    }, seconds);
   }
 
   /**
